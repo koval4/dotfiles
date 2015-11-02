@@ -49,18 +49,18 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
 main = do
-        dzenBar <- spawnPipe myXmonadBar
+        dzenBar <- spawnPipe myBar
         infoPanel <- spawnPipe "/home/koval4/.xmonad/dzen_config.sh"
         --xmproc <- spawn "/home/koval4/.xmonad/dzen_config.sh"
-        xmproc <- spawn "feh --randomize --bg-scale /home/koval4/Pictures/Ryuko/*"
+        xmproc <- spawn "feh --bg-scale /home/koval4/Pictures/wallpaper.png"
         xmonad $ defaultConfig {
           terminal                 = "xterm"
         , workspaces           = myWorkspaces
         , modMask              = mod4Mask
         , borderWidth          = 2 
-        , normalBorderColor  = "#33ff33"
+        , normalBorderColor  = "#121212"
         , focusedBorderColor = "#0080ff"
-        , manageHook = manageDocks <+> manageHook defaultConfig
+        , manageHook = myManageHook --manageDocks <+> manageHook defaultConfig
         , layoutHook = avoidStruts$  mouseResize $ windowArrange $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ renamed [CutWordsLeft 4] $ maximize $ minimize $ boringWindows $ layoutHook defaultConfig
         , logHook             = myLogHook dzenBar
         , keys = myKeys
@@ -71,17 +71,19 @@ myBitmapsDir = "/home/kova4/.xmonad/dzen_icons"
 myWorkspaces :: [String]
 myWorkspaces =  ["1:web","2:dev","3:term","4:media"] ++ map show [5..9]
 
-myXmonadBar = "dzen2 -p -x '0' -y '0' -h '20' -ta 'l' -fg '#d9d9d9' -bg '#121212' -fn '-*-Ohsnap-*-*-*-*-9-*-*-*-*-*-*-*' -e 'button2=;'"
---myXmonadBar = "/home/koval4/.xmonad/dzen_config2.sh | | dzen2 -p -h 20 -fg $FG -bg $BG -fn $CURE -e 'button2=;' "
+myBar = "dzen2 -p -x '0' -y '0' -h '20' -ta 'l' -e 'button2=;' " ++ myBarStyle
+myBarStyle = " -fg '#d9d9d9' -bg '#121212' " ++ myBarFont
+myBarFont = " -fn 'M+1mn:size=8' "
         
 -- ManageHook {{{
-manageHook' :: ManageHook
-manageHook' = (composeAll . concat $
+myManageHook :: ManageHook
+myManageHook = (composeAll . concat $
     [ [resource     =? r            --> doIgnore            |   r   <- myIgnores] -- ignore desktop
     , [className    =? c            --> doShift  "2:dev"    |   c   <- myDev    ] -- move dev to dev 
     , [className    =? c            --> doShift  "1:web"    |   c   <- myWebs   ] -- move webs to web
     , [className    =? c            --> doShift  "4:media"  |   c   <- myMedia  ] -- move media to media
     , [className    =? c            --> doCenterFloat       |   c   <- myFloats ] -- float my floats
+    , [className    =? c            --> doCenterFloat       |   c   <- myOffice ] -- office to floats
     , [name         =? n            --> doCenterFloat       |   n   <- myNames  ] -- float my names
     , [isFullscreen                 --> myDoFullFloat                           ]
     ]) 
@@ -92,10 +94,11 @@ manageHook' = (composeAll . concat $
         name      = stringProperty "WM_NAME"
  
         -- classnames
-        myFloats  = ["Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads","Nm-connection-editor"]
+        myFloats  = ["Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads"]
+	myOffice  = ["libreoffice", "libreoffice-startcenter", "libreoffice-writer", "libreoffice-impress", "libreoffice-calc", "libreoffice-draw"]
         myWebs    = ["Firefox","Google-chrome","Chromium", "Chromium-browser"]
-        myMedia   = ["rhythmbox", "vlc"]
-        myDev	  = ["qtcreator","codeblocks"]
+        myMedia   = ["rhythmbox", "Vlc"]
+        myDev	  = ["QtCreator","codeblocks"]
  
         -- resources
         myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer"]
@@ -133,6 +136,5 @@ newKeys conf@(XConfig {XMonad.modMask = modm}) = [
   ((0, xK_Print), spawn "ksnapshot")
   , ((mod1Mask , xK_Shift_L), spawn "/home/koval4/scripts/layout_switch.sh")
   , ((mod4Mask , xK_f), spawn "firefox")
-  , ((mod4Mask , xK_d), spawn "dolphin4")
    ]    
     
