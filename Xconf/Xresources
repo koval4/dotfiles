@@ -8,13 +8,13 @@ Xterm*saveLines: 4096
 !!==========SCROLL==========
 xterm*scrollKey:          true
 xterm*scrollTtyOutput:    false
-xterm*scrollBar:          true
-xterm*rightScrollBar:     true
+xterm*scrollBar:          false
+xterm*rightScrollBar:     false
 xterm*jumpScroll:         true
 xterm*multiScroll:        true
 
 !!===========FONT===========
-!!xterm*font: *dejavu*sans*mono*9*
+xterm*faceName: M+1mn:size=8
 
 !!==========COLORS==========
 

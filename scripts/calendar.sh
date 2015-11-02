@@ -1,15 +1,22 @@
 #!/bin/bash
 
+BG="#121212"
+FG="#d9d9d9"
+FONT="M+1mn:size=8"
+
+#colors
+blue="#3399ff"
+
+#date formats
 TODAY=$(expr `date +'%d'` + 0)
 MONTH=`date +'%m'`
 YEAR=`date +'%Y'`
 
 (
+echo "^fg($blue)`date +'%d %b %H.%M'` ^fg()"
 
 # current month, hilight header and today
-cal | sed -re "s/^(.*[A-Za-z][A-Za-z]*.*)$/^fg(#DE8834)^bg(#222222)\1/;
-s/(^|[ ])($TODAY)($|[ ])/\1^bg(#DE8834)^fg(#222222)\2^fg(#6c6c6c)^bg(#222222)\3/"
+cal | sed -re "s/^(.*[A-Za-z][A-Za-z]*.*)$/^fg($blue)\1/;
+s/(^|[ ])($TODAY)($|[ ])/\1^fg()\2^fg()\3/"
 sleep 8
-#cal
-) | dzen2 -p -x 1240 -w 200 -h 150 -l 10 -e 'onstart = uncollapse; button1 = exit; button3 = exit;'
-
+) | dzen2 -x 1290 -y 20 -w 130 -l 7 -fn $FONT -fg $FG -bg $BG
