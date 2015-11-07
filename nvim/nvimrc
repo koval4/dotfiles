@@ -36,6 +36,8 @@ NeoBundle 'Townk/vim-autoclose'
 "NeoBundle 'vimgdb'
 NeoBundle 'Conque-GDB'
 NeoBundle 'bling/vim-airline'
+NeoBundle 'octol/vim-cpp-enhanced-highlight'
+NeoBundle 'rdnetto/YCM-Generator'
 
 " You can specify revision/branch/tag.
 NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
@@ -98,6 +100,13 @@ set title
 
 set colorcolumn=100
 
+" Colorscheme
+set background=dark
+colorscheme delek
+highlight Pmenu ctermfg=1 ctermbg=10 guifg=#ffffff guibg=#0000ff
+highlight Comment cterm=italic ctermfg=3
+let g:airline_theme='term'
+
 "********************************************************************
 " Key Mapping
 " *******************************************************************
@@ -105,4 +114,10 @@ set colorcolumn=100
 let mapleader=","
 map <F4> :NERDTreeTabsToggle<CR>
 map <M-Tab> :tabnext<CR>
+
+"*************************************************************
+" Plugins Configuration
+"*************************************************************
+
+let g:ycm_global_ycm_extra_conf = '/home/koval4/.nvim/'
 
