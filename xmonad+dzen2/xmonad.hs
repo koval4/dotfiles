@@ -12,7 +12,6 @@ import System.Exit
  
 import XMonad.Util.Run
  
- 
 import XMonad.Actions.CycleWS
 import XMonad.Actions.MouseResize
  
@@ -51,15 +50,14 @@ import qualified Data.Map as M
 main = do
         dzenBar <- spawnPipe myBar
         infoPanel <- spawnPipe "/home/koval4/.xmonad/dzen_config.sh"
-        --xmproc <- spawn "/home/koval4/.xmonad/dzen_config.sh"
-        xmproc <- spawn "feh --bg-scale /home/koval4/Pictures/wallpaper.png"
+        xmproc <- spawn "feh --bg-scale --randomize /home/koval4/Pictures/wallpapers/*"
         xmonad $ defaultConfig {
           terminal                 = "xterm"
         , workspaces           = myWorkspaces
         , modMask              = mod4Mask
         , borderWidth          = 2 
         , normalBorderColor  = "#121212"
-        , focusedBorderColor = "#0080ff"
+        , focusedBorderColor = "#71a2df"
         , manageHook = myManageHook --manageDocks <+> manageHook defaultConfig
         , layoutHook = avoidStruts$  mouseResize $ windowArrange $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ renamed [CutWordsLeft 4] $ maximize $ minimize $ boringWindows $ layoutHook defaultConfig
         , logHook             = myLogHook dzenBar
@@ -69,19 +67,19 @@ main = do
 myBitmapsDir = "/home/kova4/.xmonad/dzen_icons"
 
 myWorkspaces :: [String]
-myWorkspaces =  ["1:web","2:dev","3:term","4:media"] ++ map show [5..9]
+myWorkspaces =  ["web","dev","term","media"] ++ map show [5..9]
 
 myBar = "dzen2 -p -x '0' -y '0' -h '20' -ta 'l' -e 'button2=;' " ++ myBarStyle
-myBarStyle = " -fg '#d9d9d9' -bg '#121212' " ++ myBarFont
+myBarStyle = " -fg '#B39D8F' -bg '#121212' " ++ myBarFont
 myBarFont = " -fn 'M+1mn:size=8' "
         
 -- ManageHook {{{
 myManageHook :: ManageHook
 myManageHook = (composeAll . concat $
     [ [resource     =? r            --> doIgnore            |   r   <- myIgnores] -- ignore desktop
-    , [className    =? c            --> doShift  "2:dev"    |   c   <- myDev    ] -- move dev to dev 
-    , [className    =? c            --> doShift  "1:web"    |   c   <- myWebs   ] -- move webs to web
-    , [className    =? c            --> doShift  "4:media"  |   c   <- myMedia  ] -- move media to media
+    , [className    =? c            --> doShift  "dev"    |   c   <- myDev    ] -- move dev to dev 
+    , [className    =? c            --> doShift  "web"    |   c   <- myWebs   ] -- move webs to web
+    , [className    =? c            --> doShift  "media"  |   c   <- myMedia  ] -- move media to media
     , [className    =? c            --> doCenterFloat       |   c   <- myFloats ] -- float my floats
     , [className    =? c            --> doCenterFloat       |   c   <- myOffice ] -- office to floats
     , [name         =? n            --> doCenterFloat       |   n   <- myNames  ] -- float my names
@@ -114,15 +112,15 @@ myDoFullFloat = doF W.focusDown <+> doFullFloat
 myLogHook :: Handle -> X ()
 myLogHook h = dynamicLogWithPP $ defaultPP
     {
-        ppCurrent           =   dzenColor "#3399ff" "" . wrap " | " " | "
-      , ppVisible           =   dzenColor "white" "#1B1D1E" . pad
-      , ppHidden            =   dzenColor "#dddddd" "" . wrap " " " "
-      , ppHiddenNoWindows   =   dzenColor "#777777" "" . wrap " " " "
+        ppCurrent           =   dzenColor "#71a2df" "" . wrap " | " " | "
+      , ppVisible           =   dzenColor "#B39D8F" "#B39D8F" . pad
+      , ppHidden            =   dzenColor "#B39D8F" "" . wrap " " " "
+      , ppHiddenNoWindows   =   dzenColor "#444444" "" . wrap " " " "
       , ppUrgent            =   dzenColor "#ff0000" "" . wrap " " " "
       , ppWsSep             =   " "
       , ppSep               =   "  |  "
-      , ppLayout            =   dzenColor "#aaaaaa" "" . wrap "^ca(1,xdotool key super+space)· " " ·^ca()"
-      , ppTitle             =   dzenColor "#ffffff" ""
+      , ppLayout            =   dzenColor "#B39D8F" "" . wrap "^ca(1,xdotool key super+space)· " " ·^ca()"
+      , ppTitle             =   dzenColor "#B39D8F" ""
                    . wrap "^ca(1,xdotool key super+k)^ca(2,xdotool key super+shift+c)"
                    " ^ca()^ca()" . shorten 50 . dzenEscape
       , ppOutput            =   hPutStrLn h

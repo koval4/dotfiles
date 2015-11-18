@@ -1,7 +1,7 @@
 #!/bin/sh
 
 BG="#121212"
-FG="#d9d9d9"
+FG="#B39D8F"
 FONT="M+1mn:size=8" # "-*-terminus-medium-r-*-*-10-*-*-*-*-*-iso10646-*"
 
 BAR_OPS="-fg #d9d9d9 -bg #555555 -h 7 -w 25 -s o -ss 1 -sw 2"
@@ -16,7 +16,7 @@ MEM_ICO="$ICONS_PATH/mem.xbm"
 NOW_PLAYING_FORMAT="%a - %t"
 
 #colors
-blue="#3399ff"
+blue="#71a2df"
 gray="#121212"
 
 # spacing
@@ -31,6 +31,12 @@ layout(){
 	#shows current keyboard layout
 	#changes layout whel clicked
 	echo -n "^ca(1, $HOME/scripts/layout_switch.sh)^fg()$LAYOUT^fg()^ca()"
+}
+
+# makes clickable area
+# if clicked -> show system info
+sysinfo() {
+    echo "^ca(1, $HOME/scripts/sysinfo.sh)^fg($blue)^i($CPU)^fg()^ca()"
 }
 
 # shows current system load
@@ -80,5 +86,6 @@ dateTime(){
 }
 
 while true ; do
-	echo $(space)$(layout)$(space)$(load) $(mem)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
+    echo $(space)$(layout)$(space)$(load) $(mem)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
+    sleep 1
 done | dzen2 -p -x 740 -w 700 -h 20 -ta 'r' -fg $FG -bg $BG -fn "$FONT" -e 'button1=exec:xterm; button2=;' 
