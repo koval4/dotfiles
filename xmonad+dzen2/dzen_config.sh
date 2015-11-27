@@ -58,7 +58,26 @@ mem(){
 # scroll up to change to next song in playlist
 # scroll down to change to previous song in playlist
 music(){
-	playing=$(mpc current)
+    artist=$(mpc current -f %artist%)
+    title=$(mpc current -f %title%)
+    # cuts artist/title strings to fit in 15 symbols
+    if [ ${#artist} -gt 15 ]; then
+        artist=${artist:0:12}"..."
+    fi
+    if [ ${#title} -gt 15 ]; then
+        title=${title:0:12}"..."
+    fi
+
+    # composes output into format %artist% - %title% if possible
+    playing=$artist" - "$title
+    if [ -z "$artist" ] && [ -n "$title" ]; then
+        playing=$title
+    elif [ -n "$artist" ] && [ -z "$title" ]; then
+        playing=$artist
+    elif [ -z "$artist" ] && [ -z "$title" ]; then
+        playing="None"
+    fi
+
 	echo -n "^ca(3, mpc toggle)^ca(4, mpc next)^ca(5, mpc prev)^fg($blue)[^fg()$playing^fg($blue)]^ca()^ca()^ca()"
 }
 
