@@ -55,7 +55,7 @@ main = do
           terminal                 = "xterm"
         , workspaces           = myWorkspaces
         , modMask              = mod4Mask
-        , borderWidth          = 2 
+        , borderWidth          = 4 
         , normalBorderColor  = "#121212"
         , focusedBorderColor = "#71a2df"
         , manageHook = myManageHook --manageDocks <+> manageHook defaultConfig
@@ -67,7 +67,8 @@ main = do
 myBitmapsDir = "/home/kova4/.xmonad/dzen_icons"
 
 myWorkspaces :: [String]
-myWorkspaces =  ["web","dev","term","media"] ++ map show [5..9]
+myWorkspaces =  click $ ["web","dev","term","media"] ++ map show [5..9]
+                where click l = [ "^ca(1, xdotool key super+" ++ show (n) ++ ")" ++ ws ++ "^ca()" | (i,ws) <- zip [1..] l, let n = i]
 
 myBar = "dzen2 -p -x '0' -y '0' -h '20' -ta 'l' -e 'button2=;' " ++ myBarStyle
 myBarStyle = " -fg '#B39D8F' -bg '#121212' " ++ myBarFont
@@ -112,17 +113,17 @@ myDoFullFloat = doF W.focusDown <+> doFullFloat
 myLogHook :: Handle -> X ()
 myLogHook h = dynamicLogWithPP $ defaultPP
     {
-        ppCurrent           =   dzenColor "#71a2df" "" . wrap " | " " | "
+        ppCurrent           =   dzenColor "#121212" "#71a2df" . pad
       , ppVisible           =   dzenColor "#B39D8F" "#B39D8F" . pad
-      , ppHidden            =   dzenColor "#B39D8F" "" . wrap " " " "
-      , ppHiddenNoWindows   =   dzenColor "#444444" "" . wrap " " " "
-      , ppUrgent            =   dzenColor "#ff0000" "" . wrap " " " "
+      , ppHidden            =   dzenColor "#B39D8F" "" . pad
+      , ppHiddenNoWindows   =   dzenColor "#444444" "" . pad
+      , ppUrgent            =   dzenColor "#BA5E57" "" . pad
       , ppWsSep             =   " "
       , ppSep               =   "  |  "
       , ppLayout            =   dzenColor "#B39D8F" "" . wrap "^ca(1,xdotool key super+space)· " " ·^ca()"
       , ppTitle             =   dzenColor "#B39D8F" ""
                    . wrap "^ca(1,xdotool key super+k)^ca(2,xdotool key super+shift+c)"
-                   " ^ca()^ca()" . shorten 50 . dzenEscape
+                   " ^ca()^ca()" . shorten 60 . dzenEscape
       , ppOutput            =   hPutStrLn h
     }
 
