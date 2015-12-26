@@ -1,0 +1,59 @@
+# Settings
+##############################################
+double_buffer yes
+background yes
+own_window yes
+own_window_transparent no
+own_window_type panel
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,below
+own_window_argb_visual yes
+own_window_argb_value 70
+own_window_colour 121212
+draw_borders no
+draw_graph_borders no
+border_outer_margin 0
+draw_shades no
+gap_y 16
+gap_x 0
+alignment bottom_left
+update_interval 0.5
+default_color D3DFD1
+color1 FFFFFF
+color2 00BFFF
+#default_shade_color 000000
+use_xft yes
+xftfont M+ 1m:size=9
+use_spacer none
+minimum_size 1360 16
+border_inner_margin 15
+uppercase no
+draw_shades no
+draw_graph_borders no
+##############################################
+#  Output
+##############################################
+TEXT
+${voffset -25}
+${goto 25}Battery ${goto 80}${color2}${battery BAT0}$color
+${goto 25}Uptime ${goto 80}${color2}$uptime$color
+${offset 162}${voffset -50}
+${offset 162}Cpu 0 ${color2}${goto 220}${cpugraph cpu0 8,50} ${cpu cpu0}%${color}
+${offset 162}Cpu 1 ${color2}${goto 220}${cpugraph cpu1 8,50} ${cpu cpu1}%${color}
+${offset 310}${voffset -50}
+${offset 310}Used${color2}[ ${color}$mem / $memmax ($memperc%)${color2} ]${color}
+${offset 310}$color2${membar 4,177} $color
+${offset 550}${voffset -53}
+${offset 520}${goto 600}${color2}${fs_bar 12,120 /home/koval4}${color}
+${offset 520}${goto 600}${color2}${fs_bar 12,120 /}${color}
+${offset 530}${voffset -52}
+${offset 530}Home${goto 610}${fs_used /home/koval4} / ${fs_size /home/koval4}    
+${offset 530}Root${goto 610}${fs_used /} / ${fs_size /}
+${offset 740}${voffset -52}
+${offset 740}Up$alignr${color2}${goto 800}${upspeed eno1}$color
+${offset 740}Down$alignr${color2}${goto 800}${downspeed eno1}$color
+${offset 860}${voffset -52}
+${offset 860}$color2${mpd_bar 4,250}$color  ${voffset -1}$mpd_elapsed$color2/$color$mpd_length
+${offset 860}$mpd_artist ${color2}-${color} $mpd_title
+${offset 1160}${voffset -55}
+${offset 1260}${font M+ 1m:size=25:style:bold}${time %I}${font :size=10}${goto 1320}${voffset -13}${color2}${time %M}${color} $alignr${voffset 14}${goto 1320}${font :size=10}${color1}${time %p}${color}
+${voffset -95}
