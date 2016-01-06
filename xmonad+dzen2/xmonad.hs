@@ -48,9 +48,16 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
 main = do
+        xmproc <- spawn "compton -b"
         dzenBar <- spawnPipe myBar
         infoPanel <- spawnPipe "/home/koval4/.xmonad/dzen_config.sh"
-        xmproc <- spawn "feh --bg-scale --randomize /home/koval4/Pictures/wallpapers/*"
+        conkyPanel <- spawnPipe "conky"
+        xmproc <- spawn "feh --bg-scale --randomize /home/koval4/Pictures/wallhaven-4145.png"
+        xmproc <- spawn "apulse skype"
+        xmproc <- spawn "mpd"
+        xmproc <- spawn "mpc update"
+        xmproc <- spawn "plank"
+        xmproc <- spawn "rofi"
         xmonad $ defaultConfig {
           terminal                 = "xterm"
         , workspaces           = myWorkspaces
@@ -93,14 +100,14 @@ myManageHook = (composeAll . concat $
         name      = stringProperty "WM_NAME"
  
         -- classnames
-        myFloats  = ["Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads"]
+        myFloats  = ["Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads","feh"]
 	myOffice  = ["libreoffice", "libreoffice-startcenter", "libreoffice-writer", "libreoffice-impress", "libreoffice-calc", "libreoffice-draw"]
         myWebs    = ["Firefox","Google-chrome","Chromium", "Chromium-browser"]
         myMedia   = ["rhythmbox", "Vlc"]
         myDev	  = ["QtCreator","codeblocks"]
  
         -- resources
-        myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer"]
+        myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer","conky", "plank"]
  
         -- names
         myNames   = ["bashrun","Google Chrome Options","Chromium Options"]
@@ -132,8 +139,9 @@ myKeys x  = M.union (M.fromList (newKeys x)) (keys defaultConfig x)
  
 -- Add new and/or redefine key bindings
 newKeys conf@(XConfig {XMonad.modMask = modm}) = [
-  ((0, xK_Print), spawn "ksnapshot")
+  ((0, xK_Print), spawn "spectacle")
   , ((mod1Mask , xK_Shift_L), spawn "/home/koval4/scripts/layout_switch.sh")
   , ((mod4Mask , xK_f), spawn "firefox")
+  , ((mod4Mask , xK_q), spawn "pkill dzen2 && pkill conky && pkill plank && pkill rofi && xmonad --restart")
    ]    
     

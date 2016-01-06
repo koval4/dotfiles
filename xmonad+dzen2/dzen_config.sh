@@ -12,6 +12,10 @@ CLOCK="$ICONS_PATH/clock.xbm"
 VOL="$ICONS_PATH/spkr_01.xbm"
 CPU="$ICONS_PATH/cpu.xbm"
 MEM_ICO="$ICONS_PATH/mem.xbm"
+NEXT_ICO="$ICONS_PATH/next.xbm"
+PREV_ICO="$ICONS_PATH/prev.xbm"
+PLAY_ICO="$ICONS_PATH/play.xbm"
+PAUSE_ICO="$ICONS_PATH/pause.xbm"
 
 NOW_PLAYING_FORMAT="%a - %t"
 
@@ -53,32 +57,9 @@ mem(){
 	return
 }
 
-# shows current music, playing in ncmpcpp
-# right click to play/pause ncmpcpp
-# scroll up to change to next song in playlist
-# scroll down to change to previous song in playlist
+# shows buttons for mpd controls
 music(){
-    artist=$(mpc current -f %artist%)
-    title=$(mpc current -f %title%)
-    # cuts artist/title strings to fit in 15 symbols
-    if [ ${#artist} -gt 15 ]; then
-        artist=${artist:0:12}"..."
-    fi
-    if [ ${#title} -gt 15 ]; then
-        title=${title:0:12}"..."
-    fi
-
-    # composes output into format %artist% - %title% if possible
-    playing=$artist" - "$title
-    if [ -z "$artist" ] && [ -n "$title" ]; then
-        playing=$title
-    elif [ -n "$artist" ] && [ -z "$title" ]; then
-        playing=$artist
-    elif [ -z "$artist" ] && [ -z "$title" ]; then
-        playing="None"
-    fi
-
-	echo -n "^ca(3, mpc toggle)^ca(4, mpc next)^ca(5, mpc prev)^fg($blue)[^fg()$playing^fg($blue)]^ca()^ca()^ca()"
+    echo -n "^fg($blue)^ca(1, mpc prev)^i($PREV_ICO)^ca() ^ca(1, mpc play)^i($PLAY_ICO)^ca() ^ca(1, mpc pause)^i($PAUSE_ICO)^ca() ^ca(1, mpc next)^i($NEXT_ICO)^ca()^fg()" 
 }
 
 # shows volume bar
@@ -98,13 +79,12 @@ vol(){
 
 # shows current date and time
 dateTime(){
-	DATE=`date +"%d %b %A,"`
-	TIME=`date +"%I:%M:%S"`
+	TIME=`date +"%H:%M:%S"`
 	#CALENDAR=cal | dzen2 -x 1240 -w 200 -h 150 -e 'onstart=uncollapse;button1=exit;button3=exit'
-	echo "^ca(1, $HOME/scripts/calendar.sh)^fg($blue)^i($CLOCK) ^fg()$DATE $TIME^ca()"
+	echo "^ca(1, $HOME/scripts/calendar.sh)^fg($blue)^i($CLOCK) ^fg()$TIME^ca()"
 }
 
 while true ; do
-    echo $(space)$(layout)$(space)$(load) $(mem)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
+    echo $(space)$(layout)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
     sleep 1
 done | dzen2 -p -x 740 -w 700 -h 20 -ta 'r' -fg $FG -bg $BG -fn "$FONT" -e 'button1=exec:xterm; button2=;' 
