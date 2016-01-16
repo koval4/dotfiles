@@ -48,24 +48,24 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
 main = do
-        xmproc <- spawn "compton -b"
+        --xmproc <- spawn "compton -b"
         dzenBar <- spawnPipe myBar
         infoPanel <- spawnPipe "/home/koval4/.xmonad/dzen_config.sh"
         conkyPanel <- spawnPipe "conky"
         xmproc <- spawn "feh --bg-scale --randomize /home/koval4/Pictures/wallhaven-4145.png"
-        xmproc <- spawn "apulse skype"
+        --xmproc <- spawn "apulse skype"
         xmproc <- spawn "mpd"
         xmproc <- spawn "mpc update"
-        xmproc <- spawn "plank"
+        --xmproc <- spawn "plank"
         xmproc <- spawn "rofi"
         xmonad $ defaultConfig {
-          terminal                 = "xterm"
+          terminal             = "xterm"
         , workspaces           = myWorkspaces
         , modMask              = mod4Mask
         , borderWidth          = 4 
-        , normalBorderColor  = "#121212"
-        , focusedBorderColor = "#71a2df"
-        , manageHook = myManageHook --manageDocks <+> manageHook defaultConfig
+        , normalBorderColor    = "#121212"
+        , focusedBorderColor   = "#71a2df"
+        , manageHook           = myManageHook --manageDocks <+> manageHook defaultConfig
         , layoutHook = avoidStruts$  mouseResize $ windowArrange $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ renamed [CutWordsLeft 4] $ maximize $ minimize $ boringWindows $ layoutHook defaultConfig
         , logHook             = myLogHook dzenBar
         , keys = myKeys
@@ -75,7 +75,7 @@ myBitmapsDir = "/home/kova4/.xmonad/dzen_icons"
 
 myWorkspaces :: [String]
 myWorkspaces =  click $ ["web","dev","term","media"] ++ map show [5..9]
-                where click l = [ "^ca(1, xdotool key super+" ++ show (n) ++ ")" ++ ws ++ "^ca()" | (i,ws) <- zip [1..] l, let n = i]
+                where click l = [ "^ca(1, xdotool key super+" ++ show (i) ++ ")" ++ ws ++ "^ca()" | (i,ws) <- zip [1..] l]
 
 myBar = "dzen2 -p -x '0' -y '0' -h '20' -ta 'l' -e 'button2=;' " ++ myBarStyle
 myBarStyle = " -fg '#B39D8F' -bg '#121212' " ++ myBarFont
@@ -84,13 +84,13 @@ myBarFont = " -fn 'M+1mn:size=8' "
 -- ManageHook {{{
 myManageHook :: ManageHook
 myManageHook = (composeAll . concat $
-    [ [resource     =? r            --> doIgnore            |   r   <- myIgnores] -- ignore desktop
-    , [className    =? c            --> doShift  "dev"    |   c   <- myDev    ] -- move dev to dev 
-    , [className    =? c            --> doShift  "web"    |   c   <- myWebs   ] -- move webs to web
-    , [className    =? c            --> doShift  "media"  |   c   <- myMedia  ] -- move media to media
-    , [className    =? c            --> doCenterFloat       |   c   <- myFloats ] -- float my floats
-    , [className    =? c            --> doCenterFloat       |   c   <- myOffice ] -- office to floats
-    , [name         =? n            --> doCenterFloat       |   n   <- myNames  ] -- float my names
+    [ [resource     =? r            --> doIgnore         |   r   <- myIgnores] -- ignore desktop
+    , [className    =? c            --> doShift  "dev"   |   c   <- myDev    ] -- move dev to dev 
+    , [className    =? c            --> doShift  "web"   |   c   <- myWebs   ] -- move webs to web
+    , [className    =? c            --> doShift  "media" |   c   <- myMedia  ] -- move media to media
+    , [className    =? c            --> doCenterFloat    |   c   <- myFloats ] -- float my floats
+    , [className    =? c            --> doCenterFloat    |   c   <- myOffice ] -- office to floats
+    , [name         =? n            --> doCenterFloat    |   n   <- myNames  ] -- float my names
     , [isFullscreen                 --> myDoFullFloat                           ]
     ]) 
  
@@ -101,7 +101,7 @@ myManageHook = (composeAll . concat $
  
         -- classnames
         myFloats  = ["Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads","feh"]
-	myOffice  = ["libreoffice", "libreoffice-startcenter", "libreoffice-writer", "libreoffice-impress", "libreoffice-calc", "libreoffice-draw"]
+        myOffice  = ["libreoffice", "libreoffice-startcenter", "libreoffice-writer", "libreoffice-impress", "libreoffice-calc", "libreoffice-draw"]
         myWebs    = ["Firefox","Google-chrome","Chromium", "Chromium-browser"]
         myMedia   = ["rhythmbox", "Vlc"]
         myDev	  = ["QtCreator","codeblocks"]
