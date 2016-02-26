@@ -1,10 +1,14 @@
 #!/bin/sh
 
+#colors
+blue="#71a2df"
+gray="#121212"
 BG="#121212"
-FG="#B39D8F"
+FG="#e6f7ff"
 FONT="M+1mn:size=8" # "-*-terminus-medium-r-*-*-10-*-*-*-*-*-iso10646-*"
 
-BAR_OPS="-fg #d9d9d9 -bg #555555 -h 7 -w 25 -s o -ss 1 -sw 2"
+#BAR_OPS="-fg #d9d9d9 -bg #555555 -h 7 -w 25 -s o -ss 1 -sw 2"
+BAR_OPS="-fg #d9d9d9 -bg $blue -h 7 -w 40 -s o -nonl"
 
 # Icons
 ICONS_PATH="$HOME/.xmonad/dzen_icons" # path to icons directory
@@ -18,10 +22,6 @@ PLAY_ICO="$ICONS_PATH/play.xbm"
 PAUSE_ICO="$ICONS_PATH/pause.xbm"
 
 NOW_PLAYING_FORMAT="%a - %t"
-
-#colors
-blue="#71a2df"
-gray="#121212"
 
 # spacing
 space(){
@@ -67,13 +67,13 @@ music(){
 # scroll downto decrease volume
 vol(){
 	ismute=`amixer get Master|grep %|awk '{ print $6 }'|sed 's/\[//g'|sed 's/\]//g'`
-	if [ "$ismute" == "off" ]; then
+if [ "$ismute" == "off" ]; then
 		VBS="0"
 	else
 		VBS=`amixer get Master|grep %|awk '{ print $4 }'|sed 's/%//g'|sed 's/\[//g'|sed 's/\]//g'`
 	fi	
 	
-	VBAR=`echo "$VBS" | gdbar $BAR_OPS |awk '{ print $1 }'`
+    VBAR=`echo "$VBS" | gdbar $BAR_OPS |awk '{ print $1 }'`
 	echo "^ca(4, amixer set Master 2dB+)^ca(5, amixer set Master 2dB-)^fg($blue)^i($VOL) ^fg()$VBAR ^ca()^ca()"
 }
 
@@ -84,7 +84,14 @@ dateTime(){
 	echo "^ca(1, $HOME/scripts/calendar.sh)^fg($blue)^i($CLOCK) ^fg()$TIME^ca()"
 }
 
+tasker(){
+    TASKER_PATH="$HOME/Shitcoding/Haskell/tasker/bin/tasker"
+    TODO_PATH="$HOME/todo.txt"
+    TODO_ITEM=`$TASKER_PATH view $TODO_PATH`
+    echo "^fg($blue)TODO:^fg() $TODO_ITEM"
+}
+
 while true ; do
-    echo $(space)$(layout)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
+    echo $(tasker)$(space)$(layout)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
     sleep 1
 done | dzen2 -p -x 740 -w 700 -h 20 -ta 'r' -fg $FG -bg $BG -fn "$FONT" -e 'button1=exec:xterm; button2=;' 

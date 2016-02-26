@@ -4,6 +4,7 @@ import XMonad.Prompt
 import XMonad.Prompt.RunOrRaise (runOrRaisePrompt)
 import XMonad.Prompt.AppendFile (appendFilePrompt)
 import XMonad.Util.EZConfig(additionalKeys)
+import XMonad.Util.SpawnOnce
 -- Hooks
 import XMonad.Operations
  
@@ -47,38 +48,40 @@ import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(T
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
+myStartup = do
+    --spawnOnce "compton -b"
+    spawnOnce "feh --bg-scale --randomize /home/koval4/Pictures/wallhaven-4145.png"
+    --spawnOnce "apulse skype"
+    spawnOnce "mpd"
+    spawnOnce "mpc update"
+    --spawnOnce "plank"
+    spawnOnce "rofi"
+
 main = do
-        --xmproc <- spawn "compton -b"
         dzenBar <- spawnPipe myBar
         infoPanel <- spawnPipe "/home/koval4/.xmonad/dzen_config.sh"
         conkyPanel <- spawnPipe "conky"
-        xmproc <- spawn "feh --bg-scale --randomize /home/koval4/Pictures/wallhaven-4145.png"
-        --xmproc <- spawn "apulse skype"
-        xmproc <- spawn "mpd"
-        xmproc <- spawn "mpc update"
-        --xmproc <- spawn "plank"
-        xmproc <- spawn "rofi"
-        xmonad $ defaultConfig {
+        xmonad $ def { 
           terminal             = "xterm"
         , workspaces           = myWorkspaces
         , modMask              = mod4Mask
         , borderWidth          = 4 
         , normalBorderColor    = "#121212"
         , focusedBorderColor   = "#71a2df"
+        , startupHook          = myStartup
         , manageHook           = myManageHook --manageDocks <+> manageHook defaultConfig
-        , layoutHook = avoidStruts$  mouseResize $ windowArrange $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ renamed [CutWordsLeft 4] $ maximize $ minimize $ boringWindows $ layoutHook defaultConfig
-        , logHook             = myLogHook dzenBar
+        , layoutHook           = avoidStruts $ mouseResize $ windowArrange $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ renamed [CutWordsLeft 4] $ maximize $ minimize $ boringWindows $ layoutHook def
+        , logHook              = myLogHook dzenBar
         , keys = myKeys
-    }
+        }
 
 myBitmapsDir = "/home/kova4/.xmonad/dzen_icons"
 
 myWorkspaces :: [String]
-myWorkspaces =  click $ ["web","dev","term","media"] ++ map show [5..9]
-                where click l = [ "^ca(1, xdotool key super+" ++ show (i) ++ ")" ++ ws ++ "^ca()" | (i,ws) <- zip [1..] l]
+myWorkspaces =  ["web","dev","term","media"] ++ map show [5..9]
 
 myBar = "dzen2 -p -x '0' -y '0' -h '20' -ta 'l' -e 'button2=;' " ++ myBarStyle
-myBarStyle = " -fg '#B39D8F' -bg '#121212' " ++ myBarFont
+myBarStyle = " -fg '#e6f7ff' -bg '#121212' " ++ myBarFont
 myBarFont = " -fn 'M+1mn:size=8' "
         
 -- ManageHook {{{
@@ -90,25 +93,20 @@ myManageHook = (composeAll . concat $
     , [className    =? c            --> doShift  "media" |   c   <- myMedia  ] -- move media to media
     , [className    =? c            --> doCenterFloat    |   c   <- myFloats ] -- float my floats
     , [className    =? c            --> doCenterFloat    |   c   <- myOffice ] -- office to floats
+    , [className    =? c            --> doShift "9"      |   c   <- myBack   ] -- background apps tp 9
     , [name         =? n            --> doCenterFloat    |   n   <- myNames  ] -- float my names
-    , [isFullscreen                 --> myDoFullFloat                           ]
-    ]) 
- 
-    where
- 
-        role      = stringProperty "WM_WINDOW_ROLE"
+    , [isFullscreen                 --> myDoFullFloat                        ]
+    ]) where 
         name      = stringProperty "WM_NAME"
- 
         -- classnames
-        myFloats  = ["Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads","feh"]
+        myFloats  = ["vivaldi-snapshot", "Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads","feh"]
         myOffice  = ["libreoffice", "libreoffice-startcenter", "libreoffice-writer", "libreoffice-impress", "libreoffice-calc", "libreoffice-draw"]
-        myWebs    = ["Firefox","Google-chrome","Chromium", "Chromium-browser"]
+        myWebs    = ["vivaldi-snapshot", "Firefox", "Google-chrome", "Chromium", "Chromium-browser"]
         myMedia   = ["rhythmbox", "Vlc"]
-        myDev	  = ["QtCreator","codeblocks"]
- 
+        myDev     = ["QtCreator", "codeblocks"]
+        myBack    = ["transmission"]
         -- resources
         myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer","conky", "plank"]
- 
         -- names
         myNames   = ["bashrun","Google Chrome Options","Chromium Options"]
  
@@ -118,30 +116,31 @@ myDoFullFloat = doF W.focusDown <+> doFullFloat
 
 --Bar
 myLogHook :: Handle -> X ()
-myLogHook h = dynamicLogWithPP $ defaultPP
-    {
-        ppCurrent           =   dzenColor "#121212" "#71a2df" . pad
-      , ppVisible           =   dzenColor "#B39D8F" "#B39D8F" . pad
-      , ppHidden            =   dzenColor "#B39D8F" "" . pad
-      , ppHiddenNoWindows   =   dzenColor "#444444" "" . pad
-      , ppUrgent            =   dzenColor "#BA5E57" "" . pad
-      , ppWsSep             =   " "
-      , ppSep               =   "  |  "
-      , ppLayout            =   dzenColor "#B39D8F" "" . wrap "^ca(1,xdotool key super+space)· " " ·^ca()"
-      , ppTitle             =   dzenColor "#B39D8F" ""
-                   . wrap "^ca(1,xdotool key super+k)^ca(2,xdotool key super+shift+c)"
-                   " ^ca()^ca()" . shorten 60 . dzenEscape
-      , ppOutput            =   hPutStrLn h
+myLogHook h = dynamicLogWithPP $ def
+    { ppCurrent           =   dzenColor "#121212" "#71a2df" . pad
+    , ppVisible           =   dzenColor "#e6f7ff" "#e6f7ff" . pad
+    , ppHidden            =   dzenColor "#e6f7ff" "" . pad
+    , ppHiddenNoWindows   =   dzenColor "#444444" "" . pad
+    , ppUrgent            =   dzenColor "#BA5E57" "" . pad
+    , ppWsSep             =   " "
+    , ppSep               =   "  |  "
+    , ppLayout            =   dzenColor "#e6f7ff" "" . wrap "^ca(1,xdotool key super+space)· " " ·^ca()"
+    , ppTitle             =   dzenColor "#e6f7ff" ""
+                 . wrap "^ca(1,xdotool key super+k)^ca(2,xdotool key super+shift+c)"
+                 " ^ca()^ca()" . shorten 60 . dzenEscape
+    , ppOutput            =   hPutStrLn h
     }
 
 -- Union default and new key bindings
-myKeys x  = M.union (M.fromList (newKeys x)) (keys defaultConfig x)
+myKeys x  = M.union (M.fromList (newKeys x)) (keys def x)
  
 -- Add new and/or redefine key bindings
-newKeys conf@(XConfig {XMonad.modMask = modm}) = [
-  ((0, xK_Print), spawn "spectacle")
-  , ((mod1Mask , xK_Shift_L), spawn "/home/koval4/scripts/layout_switch.sh")
-  , ((mod4Mask , xK_f), spawn "firefox")
-  , ((mod4Mask , xK_q), spawn "pkill dzen2 && pkill conky && pkill plank && pkill rofi && xmonad --restart")
-   ]    
+newKeys conf@XConfig {XMonad.modMask = modm} = 
+    [ ((0, xK_Print           ), spawn "spectacle")
+    , ((mod1Mask  , xK_Shift_L), spawn "/home/koval4/scripts/layout_switch.sh")
+    , ((shiftMask , xK_Alt_L  ), spawn "/home/koval4/scripts/layout_switch.sh")
+    , ((mod4Mask  , xK_f      ), spawn "firefox")
+    , ((mod4Mask  , xK_q      ), spawn "pkill dzen2 && pkill conky && pkill rofi && xmonad --restart")
+    , ((mod1Mask  , xK_Tab    ), windows W.focusUp >> windows W.shiftMaster)
+    ]    
     
