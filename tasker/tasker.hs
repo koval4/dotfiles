@@ -22,7 +22,13 @@ import Data.Time.Format
 data Task = Task { description :: String
                  , cost :: Int
                  , deadline :: Day
-                 } deriving (Show)
+                 } 
+instance Show Task where
+    show task = (description task) ++ ", " ++ (show . cost $ task) ++ ", " ++ (formatTime defaultTimeLocale "%d.%m.%Y" $ deadline task)
+instance Eq Task where
+    a == b =    description a == description b 
+             && cost        a == cost        b 
+             && deadline    a == deadline    b
 
 makeTask :: String -> Task
 makeTask line = let f = span (/= ',') line
@@ -46,10 +52,13 @@ getTopTask tasks currTime = let priority task = getPriority task currTime
                                                    then task 
                                                    else acc) (head tasks) tasks
 
+makeTasks :: [String] -> [Task]
+makeTasks = map makeTask . filter (/= "")
+
 dispatch :: [(String, [String] -> IO ())]
 dispatch =  [ ("view", view)
-            --, ("add", add)
-            --, ("remove", remove)
+            , ("add", add)
+            , ("remove", remove)
             ]
 
 view :: [String] -> IO ()
@@ -57,8 +66,30 @@ view [filename] = do
     contents <- readFile filename
     utcCurrDay <- getCurrentTime
     let currDay = utctDay utcCurrDay
-    let tasks = map makeTask $ lines contents
+        tasks = makeTasks . lines $ contents
     putStrLn $ description . getTopTask tasks $ currDay
+
+remove :: [String] -> IO()
+remove [filename] = do
+    handle <- openFile filename ReadMode
+    (tempName, tempHandle) <- openTempFile "." "temp"
+    contents <- hGetContents handle
+    utcCurrDay <- getCurrentTime
+    let tasks = makeTasks . lines $ contents
+        currDay = utctDay utcCurrDay
+        newTodo = delete (getTopTask tasks currDay) tasks
+    hPutStrLn tempHandle $ unlines . map show $ newTodo
+    hClose handle
+    hClose tempHandle
+    removeFile filename
+    renameFile tempName filename
+
+add :: [String] -> IO()
+add [filename] = do
+    putStrLn "Print new task: "
+    line <- getLine
+    let newTodo = show . makeTask $ line
+    appendFile filename (newTodo ++ "\n")
 
 main :: IO ()
 main = do

@@ -85,13 +85,16 @@ dateTime(){
 }
 
 tasker(){
-    TASKER_PATH="$HOME/Shitcoding/Haskell/tasker/bin/tasker"
+    TASKER_PATH="$HOME/scripts/tasker"
     TODO_PATH="$HOME/todo.txt"
     TODO_ITEM=`$TASKER_PATH view $TODO_PATH`
-    echo "^fg($blue)TODO:^fg() $TODO_ITEM"
+    REMOVE="$TASKER_PATH remove $TODO_PATH"
+    ADD="xterm -e $TASKER_PATH add $TODO_PATH"
+    CONTROLS="^fg($blue)[^fg()^ca(1, $REMOVE)✔^ca()|^ca(1, $ADD)+^ca()^fg($blue)]^fg()"
+    echo "^fg($blue)TODO:^fg() $TODO_ITEM $CONTROLS"
 }
 
 while true ; do
     echo $(tasker)$(space)$(layout)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
     sleep 1
-done | dzen2 -p -x 740 -w 700 -h 20 -ta 'r' -fg $FG -bg $BG -fn "$FONT" -e 'button1=exec:xterm; button2=;' 
+done | dzen2 -p -x 740 -w 700 -h 20 -ta 'r' -fg $FG -bg $BG -fn "$FONT" -e 'button2=;' 
