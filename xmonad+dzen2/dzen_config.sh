@@ -3,7 +3,7 @@
 #colors
 blue="#71a2df"
 gray="#121212"
-BG="#121212"
+BG="#0b0b14"
 FG="#e6f7ff"
 FONT="M+1mn:size=8" # "-*-terminus-medium-r-*-*-10-*-*-*-*-*-iso10646-*"
 
@@ -12,14 +12,15 @@ BAR_OPS="-fg #d9d9d9 -bg $blue -h 7 -w 40 -s o -nonl"
 
 # Icons
 ICONS_PATH="$HOME/.xmonad/dzen_icons" # path to icons directory
-CLOCK="$ICONS_PATH/clock.xbm"
+PEN="$ICONS_PATH/art.xbm"
+CLOCK="$ICONS_PATH/clock1.xbm"
 VOL="$ICONS_PATH/spkr_01.xbm"
 CPU="$ICONS_PATH/cpu.xbm"
 MEM_ICO="$ICONS_PATH/mem.xbm"
 NEXT_ICO="$ICONS_PATH/next.xbm"
 PREV_ICO="$ICONS_PATH/prev.xbm"
 PLAY_ICO="$ICONS_PATH/play.xbm"
-PAUSE_ICO="$ICONS_PATH/pause.xbm"
+PAUSE_ICO="$ICONS_PATH/pause4.xbm"
 
 NOW_PLAYING_FORMAT="%a - %t"
 
@@ -34,7 +35,7 @@ layout(){
 	LAYOUT=$(setxkbmap -query | awk 'END{print $2}')
 	#shows current keyboard layout
 	#changes layout whel clicked
-	echo -n "^ca(1, $HOME/scripts/layout_switch.sh)^fg()$LAYOUT^fg()^ca()"
+    echo -n "^ca(1, $HOME/scripts/layout_switch.sh)^fg()$LAYOUT^fg()^ca() ^fg($blue)^i($PEN)^fg()"
 }
 
 # makes clickable area
@@ -90,8 +91,9 @@ tasker(){
     TODO_ITEM=`$TASKER_PATH view $TODO_PATH`
     REMOVE="$TASKER_PATH remove $TODO_PATH"
     ADD="xterm -e $TASKER_PATH add $TODO_PATH"
+    VIEW="xterm -e nvim $TODO_PATH"
     CONTROLS="^fg($blue)[^fg()^ca(1, $REMOVE)✔^ca()|^ca(1, $ADD)+^ca()^fg($blue)]^fg()"
-    echo "^fg($blue)TODO:^fg() $TODO_ITEM $CONTROLS"
+    echo "^fg($blue)TODO:^fg() ^ca(1, $VIEW)$TODO_ITEM^ca() $CONTROLS"
 }
 
 while true ; do

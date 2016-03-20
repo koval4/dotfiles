@@ -5,7 +5,6 @@ import XMonad.Prompt.RunOrRaise (runOrRaisePrompt)
 import XMonad.Prompt.AppendFile (appendFilePrompt)
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Util.SpawnOnce
--- Hooks
 import XMonad.Operations
  
 import System.IO
@@ -16,6 +15,7 @@ import XMonad.Util.Run
 import XMonad.Actions.CycleWS
 import XMonad.Actions.MouseResize
  
+-- Hooks
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
@@ -24,7 +24,9 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.EwmhDesktops
  
-import XMonad.Layout.NoBorders (smartBorders, noBorders)
+--Layouts
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Gaps
 import XMonad.Layout.PerWorkspace (onWorkspace, onWorkspaces)
 import XMonad.Layout.IM
 import XMonad.Layout.SimpleFloat
@@ -66,23 +68,40 @@ main = do
         , workspaces           = myWorkspaces
         , modMask              = mod4Mask
         , borderWidth          = 4 
-        , normalBorderColor    = "#121212"
+        , normalBorderColor    = bg
         , focusedBorderColor   = "#71a2df"
         , startupHook          = myStartup
         , manageHook           = myManageHook --manageDocks <+> manageHook defaultConfig
-        , layoutHook           = avoidStruts $ mouseResize $ windowArrange $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ renamed [CutWordsLeft 4] $ maximize $ minimize $ boringWindows $ layoutHook def
+        , layoutHook           = myLayoutHook
         , logHook              = myLogHook dzenBar
         , keys = myKeys
         }
 
-myBitmapsDir = "/home/kova4/.xmonad/dzen_icons"
+myBitmapsDir = "/home/kova4/.xmonad/dzen_icons/"
+bg = "#0b0b14"
 
 myWorkspaces :: [String]
 myWorkspaces =  ["web","dev","term","media"] ++ map show [5..9]
 
 myBar = "dzen2 -p -x '0' -y '0' -h '20' -ta 'l' -e 'button2=;' " ++ myBarStyle
-myBarStyle = " -fg '#e6f7ff' -bg '#121212' " ++ myBarFont
+myBarStyle = " -fg '#e6f7ff' -bg '#0b0b14' " ++ myBarFont
 myBarFont = " -fn 'M+1mn:size=8' "
+
+myLayoutHook = avoidStruts 
+               $ onWorkspace "web" simpleFloat
+               $ mouseResize 
+               $ windowArrange 
+               $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) 
+               $ renamed [CutWordsLeft 4] 
+               $ maximize 
+               $ minimize 
+               $ boringWindows 
+               $ lessBorders OnlyFloat 
+               $ tiled ||| Full
+               where tiled = Tall nmaster delta ratio
+                     nmaster = 1
+                     ratio = 3/5
+                     delta = 3/100
         
 -- ManageHook {{{
 myManageHook :: ManageHook
@@ -99,9 +118,9 @@ myManageHook = (composeAll . concat $
     ]) where 
         name      = stringProperty "WM_NAME"
         -- classnames
-        myFloats  = ["vivaldi-snapshot", "Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads","feh"]
+        myFloats  = ["Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads","feh","Pidgin"] ++ myWebs ++ myOffice
         myOffice  = ["libreoffice", "libreoffice-startcenter", "libreoffice-writer", "libreoffice-impress", "libreoffice-calc", "libreoffice-draw"]
-        myWebs    = ["vivaldi-snapshot", "Firefox", "Google-chrome", "Chromium", "Chromium-browser"]
+        myWebs    = ["vivaldi-snapshot", "Firefox", "Google-chrome", "Chromium", "Chromium-browser","Pidgin","Slack"]
         myMedia   = ["rhythmbox", "Vlc"]
         myDev     = ["QtCreator", "codeblocks"]
         myBack    = ["transmission"]
@@ -124,12 +143,21 @@ myLogHook h = dynamicLogWithPP $ def
     , ppUrgent            =   dzenColor "#BA5E57" "" . pad
     , ppWsSep             =   " "
     , ppSep               =   "  |  "
-    , ppLayout            =   dzenColor "#e6f7ff" "" . wrap "^ca(1,xdotool key super+space)· " " ·^ca()"
+    , ppLayout            =   dzenColor "#e6f7ff" "" . 
+                              wrap "^ca(1,xdotool key super+space)" "^ca()" .
+                              (\x -> case x of 
+                                  "Simple Float"    -> wrapBitmap "nbstack.xbm"
+                                  "Tall"            -> wrapBitmap "layout_tall.xbm"
+                                  "Full"            -> wrapBitmap "layout_full.xbm"
+                                  _                 -> wrapBitmap "tile.xbm"
+                              )
     , ppTitle             =   dzenColor "#e6f7ff" ""
                  . wrap "^ca(1,xdotool key super+k)^ca(2,xdotool key super+shift+c)"
                  " ^ca()^ca()" . shorten 60 . dzenEscape
     , ppOutput            =   hPutStrLn h
     }
+    where
+        wrapBitmap bitmap = "^i(/home/koval4/.xmonad/dzen_icons/" ++ bitmap ++ ")"
 
 -- Union default and new key bindings
 myKeys x  = M.union (M.fromList (newKeys x)) (keys def x)
@@ -140,7 +168,7 @@ newKeys conf@XConfig {XMonad.modMask = modm} =
     , ((mod1Mask  , xK_Shift_L), spawn "/home/koval4/scripts/layout_switch.sh")
     , ((shiftMask , xK_Alt_L  ), spawn "/home/koval4/scripts/layout_switch.sh")
     , ((mod4Mask  , xK_f      ), spawn "firefox")
-    , ((mod4Mask  , xK_q      ), spawn "pkill dzen2 && pkill conky && pkill rofi && xmonad --restart")
+    , ((mod4Mask  , xK_q      ), spawn "pkill dzen2 && pkill conky && xmonad --restart")
     , ((mod1Mask  , xK_Tab    ), windows W.focusUp >> windows W.shiftMaster)
     ]    
     

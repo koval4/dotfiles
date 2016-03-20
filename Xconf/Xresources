@@ -14,24 +14,24 @@ xterm*jumpScroll:         true
 xterm*multiScroll:        true
 
 !!===========FONT===========
-xterm*faceName: M+1mn:size=8
+xterm*faceName: M+2m:size=8
 
 !!==========COLORS==========
 
 *foreground: #a4a7d7
-*background: #131314
+*background: #0B0B14
 
 !!black
 *color0:     #393939
 *color8:     #474747
 
 !!red
-*.color1:    #ec5f67
-*.color9:    #f77669
+*.color1:    #B04C4C
+*.color9:    #B32020
 
 !!green
-*.color2:    #408075
-*.color10:   #408075
+*.color2:    #7CDEA0
+*.color10:   #65F79B
 
 !!yellow
 *.color3:    #B39D8F
@@ -46,9 +46,12 @@ xterm*faceName: M+1mn:size=8
 *.color13:   #82b1ff
 
 !!cyan
-*.color6:    #5c7e8c
+*.color6:    #2CA894
 *.color14:   #80cbc4
 
 !!white
 *.color7:    #707880
 *.color15:   #cdd3de
+
+!!============ROFI===========
+rofi.key-run:   SuperL+F2
