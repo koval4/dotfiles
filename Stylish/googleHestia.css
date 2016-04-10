@@ -1,0 +1,44 @@
+@namespace url(http://www.w3.org/1999/xhtml);
+
+@-moz-document domain("www.google.com.ua") {
+img#hplogo {
+    box-sizing: border-box;
+    background: url("http://i.imgur.com/KKjrzEX.png") center no-repeat !important;
+    /*same background as the 2nd one */
+    
+    width: 321px;
+    /* width of your image */
+    
+    height: 298px;
+    /* height of your image */
+    
+    padding-left: 321px;
+    /* equal to the width of the image */
+    
+    margin: 7px auto;
+}
+#hplogo {
+    text-indent: -9000px !important;
+    white-space: nowrap;
+}
+div#hplogo {
+    box-sizing: border-box;
+    background: url("http://i1142.photobucket.com/albums/n615/tapuy/hestia2-PJM_zps2ag0zzve.gif") center no-repeat !important;
+    /*REPLACE THE URL*/
+    
+    padding-left: 321px;
+    height: 298px;
+    /* height of your image */
+    
+    padding-bottom: 335px;
+    /* tweak */
+    
+    margin: -124px auto;
+    /* tweak */
+}
+.sbibod,
+.jhp input[type="submit"],
+#fkbx {
+    opacity: .7;
+}
+}

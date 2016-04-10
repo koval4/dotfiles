@@ -1,0 +1,731 @@
+@-moz-document domain("new.vk.com") {
+body,
+#pv_author_block {
+	background: #383C4A !important;
+	font-family: "M+ 2m";
+}
+
+.top_home_link {
+	opacity: 0.8 !important;
+	-webkit-transition: opacity 0.2s
+}
+
+.top_home_link:hover {
+	opacity: 1 !important;
+	-webkit-transition: opacity 0.2s
+}
+
+.top_nav_btn:hover,
+.top_audio_player:hover,
+.top_nav_link:hover,
+.top_audio_player.audio_top_btn_active,
+.top_nav_btn.active,
+input.text,
+.fc_tab,
+.top_nav_link.active {
+	background: #21232c !important;	
+}
+
+#page_header_cont .back {
+	background: #2B2E39 !important;
+	border-bottom: none !important;
+	box-shadow: 0px 0px 7px 0 #111 !important;
+}
+
+.page_block,
+.post_upload_dropbox,
+.fakeinput, div[contenteditable=true], input.big_text, input.dark, input.search, textarea,
+.submit_post,
+.pv_cont .narrow_column,
+.ui_tabs_header, 
+.ui_search,
+.page_block_header,
+.wall_module .reply_fakebox,
+#side_bar ol li .left_row:hover,
+.wall_module .post_like:hover, .wall_module .post_share:hover,
+.stl_active.over_fast #stl_bg,
+.ui_actions_menu,
+.pv_like:hover, 
+.chat_onl_inner,
+.page_status_editor .editor,
+.my_current_info:hover, .no_current_info:hover,
+.profile_info_header,
+.profile_info_edit,
+.mention_tt_actions,
+.im-page .im-page--history-new-bar>span,
+.im-page .im-page--history-new-bar,
+#top_notify_wrap,
+.top_notify_header,
+.top_notify_show_all,
+#top_profile_menu,
+.privacy_dropdown .header,
+.privacy_dropdown .body,
+.box_body,
+.idd_popup .idd_header_wrap,
+.idd_popup .idd_item.idd_hl,
+.idd_popup .idd_items_content,
+.box_controls,
+.photos_choose_upload_area,
+.web_cam_photo,	
+.choose_search_cont input,
+.mv_controls,
+#fc_contacts, .fc_content,
+.fc_tab_head,
+div.fc_clist_filter_wrap,
+#fc_clist_filter,
+div.fc_tab_txt,
+.fc_msgs_unread,
+.fc_msgs,
+#wk_box,
+.im-page--chat-body-wrap-inner._im_peer_history_w,
+.page_media_poll_wrap,
+.feedback_row_wrap.unread,
+.ts_cont_wrap,
+.im-create,
+#im_dialogs_creation_name,
+#im_dialogs_creation,
+.owner_photo_additional,
+.im-page--history.page_block._im_page_history,
+.mail_box_cont,
+.box_body .im_stickers_store_wrap .ui_tabs,
+.im_stickers_bl_wrap,
+.gifts_box_header,
+#payments_box .payments_about_votes,
+#payments_box_right_col,
+.payments_box_wide,
+.prefix_input_wrap,
+input#phone,
+.im-mess.im_in.im-mess_fav-search.im-mess_search._im_mess_search._im_mess.im-mess_fav{	
+	background-color: #383C4A !important;
+}
+	
+	.photos_container .photos_row {
+		border: 2px solid #383C4A;
+	}
+
+
+.button_gray button, .flat_button.secondary,
+.replies_open, .wr_header,
+.chat_tab_wrap:hover,
+.ui_actions_menu_item:hover,
+.profile_more_info_link:hover,
+.friends_search_filters, .friends_search_import,
+.page_actions_header,
+.im-page .im-page--history-new-bar:after, .im-page .im-page--history-new-bar:before,
+.medadd_c_linkcon,
+.top_notify_show_all:hover,
+.feedback_row_wrap.reply_box_open,
+.top_profile_mrow:hover,
+.ok_msg,
+.privacy_dropdown .item_sel, .privacy_dropdown .item_sel_plus,
+.box_title_wrap,
+.idd_popup .idd_item.idd_hover, .idd_popup .idd_item.idd_hover_sublist_parent,
+.docs_choose_rows .docs_item:hover,
+.im-mess.im-mess_light,
+.photos_choose_upload_area:hover,
+.web_cam_photo:hover,
+.photo_upload_separator,
+.audio_friends_list,
+.audio_layer_bottom,
+.emoji_tt_wrap,
+.emoji_tabs_l_s, .emoji_tabs_r_s,
+.emoji_tab_sel, .emoji_tab_sel:hover,
+.emoji_tabs,
+.button_blue button, .button_blue button, .flat_button, .flat_button,
+.im_rc_emojibtn:hover,
+.im-mess.im-mess_selected, .im-mess.im-mess_selected:hover,
+.nim-dialog:hover,
+.nim-dialog.nim-dialog_selected,
+.im-page .im-page--mess-search,
+.audio_page_player,
+.audio_row:not(.audio_row_current):hover,
+.audio_row.audio_row_current, .audio_row.audio_row_playing, .audio_row.audio_row_current:hover, .audio_row.audio_row_playing:hover,
+.ui_tabs.ui_tabs_box,
+input,
+div.wdd,
+.wdd_list,
+.wddi_over,
+.wddi, .wddi_over,
+.wddi_no,
+.docs_choose_upload_area,
+.pv_comments_header,
+.im_editable.im-chat-input--text._im_text,
+.page_media_poll .page_poll_row,
+.wk_history_tabs,
+a.ts_contact.active, a.ts_search_link.active,
+.gift_tt_show_all,
+.page_actions_wrap,
+.im-create .im-create--tabs,
+.ui_grey_block,
+.ui_multiselect_cnt .token, .ui_search_filters_pane .token,
+.im-chat-placeholder,
+.im-chat-input,
+.im-page--header-chat._im_dialog_actionsб
+.feedback_unread_bar,
+.feedback_row_clickable:not(.feedback_row_touched):hover,
+.top_notify_cont .feedback_row_clickable.unread:hover,
+.wl_replies_header,
+.im_stickers_buy_header,
+.payments_getvotes_method_opt.payments_getvotes_active_row, .payments_getvotes_method_opt:hover,
+.button_cancel .button.hover, .button_cancel .button:hover, .button_cancel .button_hover, .button_cancel .leave_button:hover,
+.photos_go_to_album,
+.photos_period_delimiter_fixed,
+.lang_box_row:hover,
+.im-mess.im-mess_search:hover,
+#profile_groups_link:hover,
+.wddi_over,
+.feedback_unread_bar,
+.mbe_rc_emojibtn:hover,
+.im_sticker_bl,
+.photos_edit_selection_header {
+	background-color: #2B2E39 !important;
+}
+
+.ui_rmenu_item:hover,
+.ui_rmenu_subitem:hover,
+.ui_rmenu_item_sel,
+.ui_rmenu_item_sel:hover,
+em.fc_clist_hl,
+.ui_gridsorter_cont .ui_gridsorter_moveable, 
+.ui_suggester_results_list ul li.active, .ui_suggester_results_list ul li:hover,
+.emoji_tab:hover,
+.emoji_shop:hover,
+.emoji_bg,
+.media_selector .ms_items_more .ms_item:hover,
+.div.fc_tab_txt,
+.docs_choose_upload_area:hover,
+.pv_comments_header:hover,
+.nim-dialog.nim-dialog_muted .nim-dialog--unread,
+em.ts_clist_hl,
+.gift_tt_show_all:hover,
+.page_actions_item:hover,
+.button_gray button:hover,
+.flat_button.im-create--btn.button_disabled._im_confirm_creation,
+.wl_replies_header:hover,
+.selector_container td.selector input,
+.audio_friend:hover,
+.audio_friend.audio_friend_selected {
+	background-color: #2B2E39 !important;	
+}
+
+.chat_cont_sh_bottom, .chat_cont_sh_top,
+.wall_module .page_media_thumbed_link,
+.friends_photo_img,
+.pv_narrow_column_wrap {
+	background: none !important;
+}
+
+.feedback_row_answer {
+	background: #2B2E39 !important;	
+}
+
+.replies_side {
+	background-color: #2B2E39;
+	border: none !important;
+	box-shadow: none !important;	
+}
+
+.replies_side:hover,
+.audio_search_focused .audio_performer>em, .audio_search_focused .audio_title>em,
+.search_focused .highlight,
+.replies_open:hover, .wr_header:hover,
+.selector_container td.selector .token,
+a:hover .left_count_wrap{
+	background-color: #2B2E39;
+}
+
+.selector_container td.selector .token_hover {
+	background: #2B2E39 !important;
+}
+
+.page_media_poll .page_poll_percent {
+	background: #2B2E39 !important;	
+}
+
+.submit_post,
+.pv_comments,
+.ui_rmenu_sep,
+#side_bar .more_div,
+.leave_redesign,
+.post_full_like_wrap,
+.ui_actions_menu_sep,
+.friends_user_row,
+.wall_module .replies_list,
+.profile_info_block,
+.mention_tt_actions,
+.top_notify_show_all,
+.feed_row+.feed_row_fb_hidden .feedback_row:first-child, .feed_row~.feed_row .feedback_row, .feed_row~.feed_row .feedback_sticky_row, .feedback_sticky_rows+.feed_row .feedback_row,
+.box_controls,
+.wall_module .reply~.reply .dld, .wall_module .reply~.reply .reply_wrap,
+.wall_module .reply_box, .wall_module .reply_fakebox_wrap,
+.counts_module,
+.feed_row~.feed_row .feedback_row_wrap.reply_box_open,
+.top_profile_sep,
+.pedit_separator,
+.docs_item,
+.post_full_like_wrap,
+.blog_entry_like_widget,
+.header_top,
+#all_shown,
+.search_row,
+.feed_row~.feed_row .feedback_row_clickable:not(.feedback_row_touched):hover,
+.emoji_tab_sel,
+.emoji_tabs_cont,
+.emoji_shop,
+.emoji_tabs_r_s,
+.audio_layer_bottom,
+.im-chat-input,
+.nim-dialog.nim-dialog.nim-dialog_selected:hover, .nim-dialog:hover+.nim-dialog.nim-dialog_selected,
+.nim-dialog:hover,
+.nim-dialog:hover+.nim-dialog,
+.im-page .im-page--dialogs-footer,
+.im-page .im-page--mess-search,
+.ts_search_sep,
+.page_actions_inner,
+.ui_grey_block,
+.owner_photo_additional,
+.feedback_unread_bar,
+#payments_box .payments_about_votes,
+.photos_go_to_album,
+.photos_edit_selection_header{
+	border-top: 1px solid #2F343F !important;
+}
+
+.gift_tt_show_all,
+.page_actions_separator {
+	border-top: 1px solid #2F343F !important;
+}
+
+.wall_module .replies_list,
+.flat_button.ui_load_more_btn,
+.feed_updates .wall_module .feed_row .post,
+.gift_tt_show_all, .page_actions_separator, .friends_list_bl {
+	border-top: none !important;	
+}
+
+.page_top,
+.feed_new_posts,
+.group_list_row,
+.page_block_header,
+.media_preview_has_medias,
+.top_notify_header,
+.feedback_row_wrap.reply_box_open .reply_box:before,
+.feedback_row_wrap.reply_box_open,
+.privacy_dropdown .header,
+.docs_choose_rows .docs_item,
+.blog_arhive_item ,
+#audio_status_tt .audio_status_wrap,
+.audio_layer_bottom,
+.feedback_row_clickable:not(.feedback_row_touched):hover,
+.feed_updates .wall_module .feed_row .post,
+.search_results_sep,
+.gifts_section_row  {
+	border-bottom: 1px solid #2F343F !important;
+}
+
+.ui_tabs .ui_tab:hover {
+	border-bottom: 2px solid #2F343F !important;
+}
+
+#pv_author_block,
+#top_notify_wrap:before,
+.audio_page_player,
+.box_title_wrap.box_grey,
+.im-page .im-page--header-chat,
+.feedback_unread_bar,
+#mail_box_editable,
+.im_stickers_buy_header,
+input#phone,
+.photos_edit_selection_header,
+.ui_tabs,
+.ui_search{
+	border-bottom: 1px solid #2F343F !important;
+}
+
+.wall_module .copy_quote,
+.wall_module .media_desc .lnk.lnk_mail,
+.im_fwd_log_wrap, .im_wall_log_wrap {
+	border-left: 2px solid #2F343F !important;
+}
+
+div[contenteditable=true],
+.profile_msg_split .profile_btn_cut_right,
+.medadd_c_linkcon,
+.feedback_row_answer,
+.fakeinput.dark, .fakeinput.dark~.placeholder .ph_input, div[contenteditable=true], div[contenteditable=true]~.placeholder .ph_input, input.dark, input.dark~.placeholder .ph_input, textarea.dark, textarea.dark~.placeholder .ph_input,
+.ok_msg,
+.feed_row,
+.privacy_dropdown .header,
+.ui_suggester_results_list,
+.idd_popup, 
+.page_block .module:first-child .module_header .header_top,
+.emoji_tt_wrap,
+.emoji_tabs_l_s, .emoji_tabs_r_s,
+.emoji_tab_sel, .emoji_tab_sel:hover,
+.emoji_tabs,
+.fc_msgs,
+div.wdd,
+.wdd_list,
+.wddi, .wddi_over,
+.page_media_poll_wrap,
+.wl_replies_header,
+.im-important-box .ui_tab.ui_tab_sel:hover {
+	border: none !important;	
+}
+
+.page_actions_wrap {
+	border: 1px solid #2F343F !important;	
+}
+
+.profile_msg_split .profile_btn_cut_left,
+.top_audio_layer .audio_layer_rows_cont{
+	border-right: 1px solid #2F343F !important;	
+}
+
+.page_block,
+.ui_actions_menu,
+.page_status_editor .editor,
+#top_notify_wrap,
+#top_profile_menu,
+.idd_popup,
+.ts_cont_wrap {
+	box-shadow: 0 0 5px #111 !important;
+	border: none !important;
+	border-radius: 0px !important;
+}
+
+body,
+.module_header .header_top,
+a,
+.fakeinput, .fakeinput~.placeholder .ph_input, div[contenteditable=true], div[contenteditable=true]~.placeholder .ph_input, input.big_text, input.big_text~.placeholder .ph_input, input.dark, input.dark~.placeholder .ph_input, input.search, input.search~.placeholder .ph_input, input.text, input.text~.placeholder .ph_input, textarea, textarea~.placeholder .ph_input,
+.post_like, .post_share,
+.ui_rmenu_item, .ui_rmenu_subitem,
+input.ui_search_field,
+.page_block_header,
+.ui_actions_menu_item,
+.tt_w,
+.button_gray button, .flat_button.secondary,
+.wall_module .media_desc .lnk .lnk_mail_description,
+.top_notify_cont,
+.top_notify_header,
+.right_list_header,
+#top_profile_menu,
+.pedit_label_box,
+.selector_container td.selector .token,
+.privacy_dropdown .header,
+.privacy_dropdown .item, .privacy_dropdown .item_sel, .privacy_dropdown .item_sel_plus,
+.ui_search_custom_link,
+.idd_popup .idd_header,
+.idd_popup .idd_itemб
+.blog_entry_title, .blog_entry_text,
+.blog_entry_title, .blog_entry_text,
+.blog_redesign_title,
+.blog_redesign_descr,
+.web_cam_photo,
+.audio_page_player .audio_page_player_title,
+.mv_title,
+.audio_layer_bottom,
+.nim-dialog.nim-dialog_selected .nim-dialog--date, .nim-dialog.nim-dialog_selected .nim-dialog--name, .nim-dialog.nim-dialog_selected .nim-dialog--name-w, .nim-dialog.nim-dialog_selected .nim-dialog--preview, .nim-dialog.nim-dialog_selected .nim-dialog--text-preview, .nim-dialog.nim-dialog_selected .nim-dialog--who,
+.fc_tab_title,
+.ui_tab_sel, .ui_tabs .ui_tab_sel, .ui_tabs_box .ui_tab_sel,
+.subheader,
+.wddi_text,
+input,
+.pv_comments_header,
+.replies_open, .wr_header,
+.wall_module div.page_media_link_desc,
+.page_media_poll_title,
+.page_media_poll .page_poll_row_count,
+.page_media_poll .page_poll_row_percent,
+.page_block_sub_header,
+.gift_tt_header,
+.page_actions_dd_label, .page_actions_header_inner,
+.page_actions_wrap,
+.im-page-btn,
+.ui_multiselect_cnt .token .token_title, .ui_search_filters_pane .token .token_title,
+.box_title_wrap.box_grey .box_title,
+.feedback_unread_bar,
+.im_sticker_bl_name,
+.im_stickerpack_name,
+.gifts_section_row h2,
+#payments_box,
+.payments_summary_header,
+.photos_edit_selection_header,
+.lang_selected .lang_box_row_label,
+h1 {	
+	color: #ccc !important;
+}
+
+.post_author .author,
+.wall_module .author, 
+.wall_module .copy_author,
+.wall_text a,
+.feed_new_posts,
+.wall_module .media_desc .a,
+.current_audio_cnt,
+h4,
+.mv_more, .mv_more.idd_wrap,
+.audio_row.lyrics .audio_title_inner,
+.im-mess-stack .im-mess-stack--content .im-mess-stack--pname a,
+.page_media_poll .page_poll_percent,
+.ts_contact_name,
+.ui_tab_plain,
+.page_counter .count,
+.page_counter:hover .label {
+	color: #9af !important;	
+}
+
+#stl_text,
+.pv_like,
+.feedback_header, 
+.feedback_header b,
+.pedit_label,
+.im-mess .im-mess--btn,
+.im-fwd .im-fwd--messages,
+.audio_layout,
+.audio_friend_status .audio_friend_audios_count,
+.ui_tab,
+.owner_photo_additional,
+a.reply_link._reply_lnk,
+.reply_date a.wd_lnk:hover,
+.button_cancel .button.hover, .button_cancel .button:hover, .button_cancel .button_hover, .button_cancel .leave_button:hover{
+	color: #999 !important;
+}
+
+span.rel_date.rel_date_needs_update {
+	color: #777 !important;
+}
+
+div[data-eng-name="Russian"] a {
+	color: #ccc !important;	
+}
+
+.pedit_privacy_control a {
+	color: rgba(0,0,0,0) !important;
+}
+
+.left_count_wrap {
+	background: none !important;
+	color: #aaa !important;
+	border-radius: 0px !important; 
+	-webkit-transition: background 0s !important;
+}
+
+.replies_open, .wr_header,
+.pv_comments_header {
+	margin: 0px 0px 0 !important;
+	border-radius: 0px !important;
+}	
+
+.nim-dialog:hover .nim-dialog--photo,
+.nim-dialog.nim-dialog_muted.nim-dialog_selected .nim-dialog--photo, .nim-dialog.nim-dialog_selected .nim-dialog--photo,
+.chat_tab_wrap:hover .chat_tab_online_icon,
+.nim-peer.nim-peer_online .nim-peer--online {
+	border-color: #2F343F !important;	
+}
+
+.nim-dialog .nim-dialog--photo,
+.prefix_input_border,
+.chat_tab_online_icon,
+.online:after {
+	border-color: #2F343F !important;	
+}
+
+.replies_open:hover, .wr_header:hover,
+.feed_new_posts {
+	box-shadow: none !important;
+}
+	
+:focus {
+    outline: #fff none 1px !important;
+}
+
+.tt_w,
+#side_bar ol li .left_row:hover,
+.wall_module .post_like:hover, .wall_module .post_share:hover,
+.chat_onl_inner,
+div[contenteditable=true],
+.profile_more_info_link,
+.friends_find_user_img,
+.top_notify_header,
+.feedback_row_answer,
+.fakeinput.dark, .fakeinput.dark~.placeholder .ph_input, div[contenteditable=true], div[contenteditable=true]~.placeholder .ph_input, input.dark, input.dark~.placeholder .ph_input, textarea.dark, textarea.dark~.placeholder .ph_input,
+.ok_msg,
+.box_title_wrap,
+.box_no_buttons,
+.video_item .video_item_thumb,
+.box_controls,
+.post_full_like_wrap,
+.audio_row,
+.audio_catalog_performers .audio_catalog_performer_thumb,
+.emoji_tt_wrap,
+.emoji_tabs_l_s, .emoji_tabs_r_s,
+.emoji_tab_sel, .emoji_tab_sel:hover,
+.emoji_tabs,
+.fc_msgs,
+.wdd_list,
+#profile_groups_link:hover,
+.page_avatar_img,
+.page_avatar,
+.profile_msg_split .profile_btn_cut_left,
+.button_blue button, .button_gray button, .button_light_gray button, .flat_button {
+	border-radius: 0px !important;
+}
+
+.wall_module .post_like_icon, .wall_module .post_share_icon {
+	opacity: 1 !important;
+}
+
+.audio_page_player .audio_control_btn .icon {
+	opacity: 1 !important;
+}
+
+.checkbox:before {
+	opacity: 0.4 !important;	
+}
+
+.audio_inline_player .slider .slider_slide, .audio_page_player .slider .slider_slide {
+	background-color: #2B2E39 !important;	
+}
+
+#audio_status_tt .audio_status_wrap,
+#audio_status_tt .audio_share_cont,
+.eltt,
+.ui_search_fltr,
+.privacy_dropdown {
+	background-color: #2B2E39 !important;
+	border-radius: 0px !important;
+	border: none !important;
+}
+
+.eltt,
+.ui_search_fltr,
+.ui_suggester_results_list,
+.privacy_dropdown,
+.ms_items_more {
+	box-shadow: 0 0 5px 0 #383C4A !important;
+}
+
+.prefix_input_prefix {
+	padding-right: 5px !important;	
+}
+
+.ui_suggester_results_list ul li.active, .ui_suggester_results_list ul li,
+.ui_search_fltr,
+.ui_search_fltr_label {
+	background: #2B2E39 !important;	
+	color: #ccc !important;
+}
+
+.emoji_expanded .emoji_expand_shadow, .emoji_expanded .emoji_expand_shadow_top,
+.emoji_tabs_l_sc, .emoji_tabs_r_sc {
+	display: none !important;	
+}
+
+.ms_items_more {
+	background: #2B2E39 !important;
+	border: none !important;
+	border-radius: 0 !important;
+}
+
+/* search */
+.selector_container table.selector_table {
+	border: none !important;
+	border-radius: 0px !important;
+	background: #2B2E39 !important;	
+}
+
+.search_filter_main, .search_filter_open, .search_filter_shut,
+.result_list ul li {
+	color: #ccc !important;
+}
+
+disabled.selector_container {
+	color: #888 !important;	
+}
+
+.search_sep {
+	border-top: 1px solid #2F343F !important;	
+}
+
+.result_list {
+	border-radius: 0px !important;
+	border: none !important;
+}
+
+.result_list ul,
+.result_list ul li,
+.friends_import_row:hover {
+	background: #2B2E39 !important;	
+}
+.result_list ul li:hover {
+	background: #383C4A !important;	
+}
+/* /search */
+
+.fc_tab_head,
+#fc_ctabs_cont,
+.fc_tab {
+	border: none !important;
+	border-radius: 0px !important;
+}
+
+.fc_tab_wrap {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.7) !important;
+}
+
+.scrollbar_inner {
+	background: #2B2E39 !important;	
+}
+
+div.fc_tab_txt {
+	border-top: none !important;	
+}
+
+div.fc_clist_filter_wrap {
+	border-top: 1px solid #2F343F !important;	
+}
+
+.fc_tab_notify {
+	border-bottom: 1px solid #2F343F !important;
+}
+
+a.fc_contact_over,
+.fc_tab_notify {
+	background: #2B2E39 !important;
+}
+/* /dialogs */
+
+/* messages */
+.im-page .im-page--peer,
+.nim-dialog .nim-dialog--name .nim-dialog--name-w,
+.im-page .im-page--mess-search {
+	color: #aaa !important;	
+}
+
+.im-page .im-page--dialogs-footer.ui_grey_block,
+.tt_default, .tt_default_right {
+	background: #2B2E39 !important;	
+}
+
+.tt_default, .tt_default_right {
+	box-shadow: 0 0 5px #333 !important;
+}
+
+.im-mess-stack .im-mess-stack--mess li:last-of-type,
+.tt_default, .tt_default_right {
+	border: none !important;
+}
+
+.im-chat-input .im-chat-input--text,
+.im-page .im-page--mess-search {
+	border-bottom: 1px solid #2F343F !important;
+}
+
+.nim-dialog .nim-dialog--content,
+.nim-dialog .nim-dialog--content:hover {
+	border-top: none !important;
+}
+
+/* /messages */
+}
