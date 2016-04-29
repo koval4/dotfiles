@@ -1,0 +1,4 @@
+rofi.font:          M+1mn 12
+rofi.color-normal:  #21232c,#71a2df,#2b2e39,#383c4a,#e6f7ff
+rofi.color-window:  #21232c,#2b2e39
+
