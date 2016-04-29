@@ -20,7 +20,7 @@ MEM_ICO="$ICONS_PATH/mem.xbm"
 NEXT_ICO="$ICONS_PATH/next.xbm"
 PREV_ICO="$ICONS_PATH/prev.xbm"
 PLAY_ICO="$ICONS_PATH/play.xbm"
-PAUSE_ICO="$ICONS_PATH/pause4.xbm"
+PAUSE_ICO="$ICONS_PATH/pause.xbm"
 
 NOW_PLAYING_FORMAT="%a - %t"
 

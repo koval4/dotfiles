@@ -58,13 +58,14 @@ myStartup = do
     spawnOnce "mpc update"
     --spawnOnce "plank"
     spawnOnce "rofi"
+    spawnOnce "twmnd"
 
 main = do
         dzenBar <- spawnPipe myBar
         infoPanel <- spawnPipe "/home/koval4/.xmonad/dzen_config.sh"
         conkyPanel <- spawnPipe "conky"
         xmonad $ def { 
-          terminal             = "xterm"
+          terminal             = "termite"
         , workspaces           = myWorkspaces
         , modMask              = mod4Mask
         , borderWidth          = 4 
@@ -118,10 +119,10 @@ myManageHook = (composeAll . concat $
     ]) where 
         name      = stringProperty "WM_NAME"
         -- classnames
-        myFloats  = ["Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads","feh","Pidgin"] ++ myWebs ++ myOffice
+        myFloats  = ["VirtualBox","Xmessage","XFontSel","Downloads","feh","Pidgin"] ++ myWebs ++ myOffice
         myOffice  = ["libreoffice", "libreoffice-startcenter", "libreoffice-writer", "libreoffice-impress", "libreoffice-calc", "libreoffice-draw"]
-        myWebs    = ["vivaldi-snapshot", "Firefox", "Google-chrome", "Chromium", "Chromium-browser","Pidgin","Slack"]
-        myMedia   = ["rhythmbox", "Vlc"]
+        myWebs    = ["vivaldi-snapshot", "Firefox", "Google-chrome", "Chromium", "Chromium-browser","Pidgin","Slack","Telegram"]
+        myMedia   = ["rhythmbox", "Vlc", "baka-mplayer"]
         myDev     = ["QtCreator", "codeblocks"]
         myBack    = ["transmission"]
         -- resources
@@ -170,5 +171,6 @@ newKeys conf@XConfig {XMonad.modMask = modm} =
     , ((mod4Mask  , xK_f      ), spawn "firefox")
     , ((mod4Mask  , xK_q      ), spawn "pkill dzen2 && pkill conky && xmonad --restart")
     , ((mod1Mask  , xK_Tab    ), windows W.focusUp >> windows W.shiftMaster)
+    , ((mod4Mask  , xK_F2     ), spawn "rofi -show run")
     ]    
     
