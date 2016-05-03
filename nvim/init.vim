@@ -31,17 +31,22 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'gcmt/taboo.vim'
-NeoBundle 'Valloric/YouCompleteMe'
+"NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'Townk/vim-autoclose'
 "NeoBundle 'vimgdb'
 NeoBundle 'Conque-GDB'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'octol/vim-cpp-enhanced-highlight'
-NeoBundle 'rdnetto/YCM-Generator'
+"NeoBundle 'rdnetto/YCM-Generator'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'ervandew/supertab'
 NeoBundle 'eagletmt/neco-ghc'
+NeoBundle 'othree/html5.vim'
+NeoBundle 'tpope/vim-ragtag'
+NeoBundle 'Shougo/deoplete.nvim'
+NeoBundle 'Shougo/neoinclude.vim'
+NeoBundle 'Rip-Rip/clang_complete'
 
 NeoBundle 'Shougo/vimproc.vim', {
 \ 'build' : {
@@ -116,10 +121,10 @@ set colorcolumn=100
 
 " Colorscheme
 set background=dark
-colorscheme delek
-highlight Pmenu ctermfg=1 ctermbg=10 guifg=#ffffff guibg=#0000ff
+"colorscheme delek
+highlight Pmenu ctermfg=13 ctermbg=0
 highlight Comment cterm=italic ctermfg=3
-let g:airline_theme='term'
+"let g:airline_theme='term'
 
 "********************************************************************
 " Key Mapping
@@ -127,7 +132,8 @@ let g:airline_theme='term'
 
 let mapleader=","
 map <F4> :NERDTreeTabsToggle<CR>
-map <M-Tab> :tabnext<CR>
+map <A-o> t:tabnew<CR>
+map <C-l> t:tabnext<CR>
 
 "*************************************************************
 " Plugins Configuration
@@ -143,6 +149,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++14 -stdlib=libc++'
 
 map <silent> tw :GhcModTypeInsert<CR>
 map <silent> ts :GhcModSplitFunCase<CR>
@@ -166,3 +174,20 @@ endif
 let g:haskellmode_completion_ghc = 1
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 autocmd BufEnter *.hs set formatprg=pointfree
+
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+" let g:deoplete#disable_auto_complete = 1
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+let g:clang_complete_auto = 0
+    let g:clang_auto_select = 0
+    let g:clang_omnicppcomplete_compliance = 0
+    let g:clang_make_default_keymappings = 0
+    "let g:clang_use_library = 1
+
+filetype plugin indent on
+set omnifunc=syntaxcomplete#Complete<Paste>
+
