@@ -5,7 +5,7 @@ blue="#71a2df"
 gray="#121212"
 BG="#0b0b14"
 FG="#e6f7ff"
-FONT="M+1mn:size=8" # "-*-terminus-medium-r-*-*-10-*-*-*-*-*-iso10646-*"
+FONT="M+1mn:size=10" # "-*-terminus-medium-r-*-*-10-*-*-*-*-*-iso10646-*"
 
 #BAR_OPS="-fg #d9d9d9 -bg #555555 -h 7 -w 25 -s o -ss 1 -sw 2"
 BAR_OPS="-fg #d9d9d9 -bg $blue -h 7 -w 40 -s o -nonl"
@@ -39,9 +39,9 @@ layout(){
 }
 
 # makes clickable area
-# if clicked -> show system info
+# if clicked -> shows conky
 sysinfo() {
-    echo "^ca(1, $HOME/scripts/sysinfo.sh)^fg($blue)^i($CPU)^fg()^ca()"
+    echo "^ca(1, conky -i 30)^fg($blue)^i($CPU)^fg()^ca()"
 }
 
 # shows current system load
@@ -97,6 +97,6 @@ tasker(){
 }
 
 while true ; do
-    echo $(tasker)$(space)$(layout)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
+    echo $(tasker)$(space)$(layout)$(space)$(sysinfo)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
     sleep 1
 done | dzen2 -p -x 740 -w 700 -h 20 -ta 'r' -fg $FG -bg $BG -fn "$FONT" -e 'button2=;' 

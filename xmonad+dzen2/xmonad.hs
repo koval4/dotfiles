@@ -57,13 +57,11 @@ myStartup = do
     spawnOnce "mpd"
     spawnOnce "mpc update"
     --spawnOnce "plank"
-    spawnOnce "rofi"
     spawnOnce "twmnd"
 
 main = do
         dzenBar <- spawnPipe myBar
         infoPanel <- spawnPipe "/home/koval4/.xmonad/dzen_config.sh"
-        conkyPanel <- spawnPipe "conky"
         xmonad $ def { 
           terminal             = "termite"
         , workspaces           = myWorkspaces
@@ -82,11 +80,11 @@ myBitmapsDir = "/home/kova4/.xmonad/dzen_icons/"
 bg = "#0b0b14"
 
 myWorkspaces :: [String]
-myWorkspaces =  ["web","dev","term","media"] ++ map show [5..9]
+myWorkspaces =  ["web","dev","term","media","other"]
 
 myBar = "dzen2 -p -x '0' -y '0' -h '20' -ta 'l' -e 'button2=;' " ++ myBarStyle
 myBarStyle = " -fg '#e6f7ff' -bg '#0b0b14' " ++ myBarFont
-myBarFont = " -fn 'M+1mn:size=8' "
+myBarFont = " -fn 'M+1mn:size=10' "
 
 myLayoutHook = avoidStruts 
                $ onWorkspace "web" simpleFloat
@@ -113,7 +111,7 @@ myManageHook = (composeAll . concat $
     , [className    =? c            --> doShift  "media" |   c   <- myMedia  ] -- move media to media
     , [className    =? c            --> doCenterFloat    |   c   <- myFloats ] -- float my floats
     , [className    =? c            --> doCenterFloat    |   c   <- myOffice ] -- office to floats
-    , [className    =? c            --> doShift "9"      |   c   <- myBack   ] -- background apps tp 9
+    , [className    =? c            --> doShift "other"  |   c   <- myBack   ] -- background apps tp 9
     , [name         =? n            --> doCenterFloat    |   n   <- myNames  ] -- float my names
     , [isFullscreen                 --> myDoFullFloat                        ]
     ]) where 
@@ -121,7 +119,7 @@ myManageHook = (composeAll . concat $
         -- classnames
         myFloats  = ["VirtualBox","Xmessage","XFontSel","Downloads","feh","Pidgin"] ++ myWebs ++ myOffice
         myOffice  = ["libreoffice", "libreoffice-startcenter", "libreoffice-writer", "libreoffice-impress", "libreoffice-calc", "libreoffice-draw"]
-        myWebs    = ["vivaldi-snapshot", "Firefox", "Google-chrome", "Chromium", "Chromium-browser","Pidgin","Slack","Telegram"]
+        myWebs    = ["vivaldi-snapshot", "Firefox", "Google-chrome", "Chromium", "Chromium-browser","Pidgin","Slack","telegram-desktop"]
         myMedia   = ["rhythmbox", "Vlc", "baka-mplayer"]
         myDev     = ["QtCreator", "codeblocks"]
         myBack    = ["transmission"]
@@ -169,7 +167,7 @@ newKeys conf@XConfig {XMonad.modMask = modm} =
     , ((mod1Mask  , xK_Shift_L), spawn "/home/koval4/scripts/layout_switch.sh")
     , ((shiftMask , xK_Alt_L  ), spawn "/home/koval4/scripts/layout_switch.sh")
     , ((mod4Mask  , xK_f      ), spawn "firefox")
-    , ((mod4Mask  , xK_q      ), spawn "pkill dzen2 && pkill conky && xmonad --restart")
+    , ((mod4Mask  , xK_q      ), spawn "pkill dzen2 && xmonad --restart")
     , ((mod1Mask  , xK_Tab    ), windows W.focusUp >> windows W.shiftMaster)
     , ((mod4Mask  , xK_F2     ), spawn "rofi -show run")
     ]    
