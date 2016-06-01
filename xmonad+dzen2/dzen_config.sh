@@ -99,4 +99,4 @@ tasker(){
 while true ; do
     echo $(tasker)$(space)$(layout)$(space)$(sysinfo)$(space)$(vol)$(music)$(space)$(dateTime)$(space)	
     sleep 1
-done | dzen2 -p -x 740 -w 700 -h 20 -ta 'r' -fg $FG -bg $BG -fn "$FONT" -e 'button2=;' 
+done | dzen2 -p -x 740 -w 700 -h 25 -ta 'r' -fg $FG -bg $BG -fn "$FONT" -e 'button2=;' 

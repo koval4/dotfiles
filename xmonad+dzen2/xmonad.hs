@@ -71,6 +71,7 @@ main = do
         , focusedBorderColor   = "#71a2df"
         , startupHook          = myStartup
         , manageHook           = myManageHook --manageDocks <+> manageHook defaultConfig
+        , handleEventHook      = fullscreenEventHook
         , layoutHook           = myLayoutHook
         , logHook              = myLogHook dzenBar
         , keys = myKeys
@@ -82,12 +83,11 @@ bg = "#0b0b14"
 myWorkspaces :: [String]
 myWorkspaces =  ["web","dev","term","media","other"]
 
-myBar = "dzen2 -p -x '0' -y '0' -h '20' -ta 'l' -e 'button2=;' " ++ myBarStyle
+myBar = "dzen2 -p -x '0' -y '0' -h '25' -ta 'l' -e 'button2=;' " ++ myBarStyle
 myBarStyle = " -fg '#e6f7ff' -bg '#0b0b14' " ++ myBarFont
 myBarFont = " -fn 'M+1mn:size=10' "
 
 myLayoutHook = avoidStruts 
-               $ onWorkspace "web" simpleFloat
                $ mouseResize 
                $ windowArrange 
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) 
@@ -121,7 +121,7 @@ myManageHook = (composeAll . concat $
         myOffice  = ["libreoffice", "libreoffice-startcenter", "libreoffice-writer", "libreoffice-impress", "libreoffice-calc", "libreoffice-draw"]
         myWebs    = ["vivaldi-snapshot", "Firefox", "Google-chrome", "Chromium", "Chromium-browser","Pidgin","Slack","telegram-desktop"]
         myMedia   = ["rhythmbox", "Vlc", "baka-mplayer"]
-        myDev     = ["QtCreator", "codeblocks"]
+        myDev     = ["QtCreator", "codeblocks", "MonoDevelop"]
         myBack    = ["transmission"]
         -- resources
         myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer","conky", "plank"]
