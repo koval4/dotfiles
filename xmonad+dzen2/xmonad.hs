@@ -57,11 +57,11 @@ myStartup = do
     spawnOnce "mpd"
     spawnOnce "mpc update"
     spawnOnce "twmnd"
-    spawnOnce "$HOME/scripts/tasker startReminder $HOME/todo.txt"
+    --spawnOnce "/home/koval4/scripts/tasker startReminder /home/koval4/todo.txt"
 
 main = do
         dzenBar <- spawnPipe myBar
-        infoPanel <- spawnPipe "/home/koval4/.xmonad/dzen_config.sh"
+        --infoPanel <- spawnPipe "/home/koval4/.xmonad/lemonbar_config.sh"
         xmonad $ fullscreenSupport $ def {
           terminal             = "termite"
         , workspaces           = myWorkspaces
@@ -70,7 +70,7 @@ main = do
         , normalBorderColor    = bg
         , focusedBorderColor   = "#71a2df"
         , startupHook          = myStartup
-        , manageHook           = myManageHook --manageDocks <+> manageHook defaultConfig
+        , manageHook           = manageDocks <+> myManageHook
         , handleEventHook      = mconcat [ docksEventHook, handleEventHook def ]
         , layoutHook           = myLayoutHook
         , logHook              = myLogHook dzenBar
@@ -83,9 +83,9 @@ bg = "#0b0b14"
 myWorkspaces :: [String]
 myWorkspaces =  ["web","dev","term","media","other"]
 
-myBar = "lemonbar -p -d -g 1440x25+0+0 " ++ myBarStyle
+myBar = "lemonbar -p -d -g 1366x25+0+0 " ++ myBarStyle ++ " | zsh"
 myBarStyle = " -F \"#e6f7ff\" -B \"#0b0b14\" " ++ myBarFont
-myBarFont = " -f \"M+1mn:size=10\" "
+myBarFont = " -f \"M+1mn:size=10\" -f \"FontAwesome:size=10\" "
 
 myLayoutHook = avoidStruts
                -- $ mouseResize
@@ -127,7 +127,7 @@ myManageHook = (composeAll . concat $
         myWebs    = ["vivaldi-snapshot", "Firefox", "Google-chrome", "Chromium", "Chromium-browser","Pidgin","Slack","telegram-desktop"]
         myMedia   = ["rhythmbox", "Vlc", "baka-mplayer"]
         myDev     = ["QtCreator", "codeblocks", "MonoDevelop", "Emacs"]
-        myBack    = ["transmission"]
+        myBack    = ["Transmission-gtk"]
         -- resources
         myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer","conky", "plank"]
         -- names
@@ -141,19 +141,19 @@ myDoFullFloat = doF W.focusDown <+> doFullFloat
 myLogHook :: Handle -> X ()
 myLogHook h = dynamicLogWithPP $ XMonad.Hooks.DynamicLog.def
     { ppCurrent           =   wrap "%{B#71a2df}%{F#121212}" barColors . pad
-    , ppVisible           =   wrap "%{F#e6f7ff}" "%{F#e6f7ff}" . pad
-    , ppHidden            =   wrap "%{F#e6f7ff}" "%{F#e6f7ff}" . pad
-    , ppHiddenNoWindows   =   wrap "%{F#444444}" "" . pad
-    , ppUrgent            =   wrap "%{F#BA5E57}" "" . pad
+    , ppVisible           =   wrap "%{F#e6f7ff}" "%{F-}" . pad
+    , ppHidden            =   wrap "%{F#e6f7ff}" "%{F-}" . pad
+    , ppHiddenNoWindows   =   wrap "%{F#444444}" "%{F-}" . pad
+    , ppUrgent            =   wrap "%{F#BA5E57}" "%{F-}" . pad
     , ppWsSep             =   " "
-    , ppSep               =   "  |  "
+    , ppSep               =   ""
     , ppTitle             =   const ""
     , ppLayout            =   const ""
-    -- , ppExtras            =   [myLog]
+    , ppExtras            =   [myLog]
     , ppOutput            =   hPutStrLn h
     }
     where
-        barColors = "%{B#0b0b14}%{F#e6f7ff}"
+        barColors = "%{B-}%{F-}"
 
 myLog :: Logger
 myLog = logCmd "/home/koval4/.xmonad/panel.sh"
@@ -163,14 +163,19 @@ myKeys x  = M.union (M.fromList (newKeys x)) (keys def x)
 
 -- Add new and/or redefine key bindings
 newKeys conf@XConfig {XMonad.modMask = modm} =
-    [ ((0, xK_Print           ), spawn "spectacle")
+    [ ((0         , xK_Print  ), spawn "spectacle")
     , ((mod1Mask  , xK_Shift_L), spawn "/home/koval4/scripts/layout_switch.sh")
     , ((shiftMask , xK_Alt_L  ), spawn "/home/koval4/scripts/layout_switch.sh")
     , ((mod1Mask  , xK_j      ), spawn "setxkbmap jp")
     , ((mod4Mask  , xK_f      ), spawn "firefox")
-    , ((mod4Mask  , xK_q      ), spawn "pkill dzen2 && xmonad --restart")
+    , ((mod4Mask  , xK_q      ), spawn "xmonad --recompile && (pkill lemonbar; xmonad --restart)")
     , ((mod1Mask  , xK_Tab    ), windows W.focusUp >> windows W.shiftMaster)
     , ((mod4Mask  , xK_F2     ), spawn "rofi -show run")
     , ((mod4Mask  , xK_s      ), sendMessage ToggleStruts)
+    , ((0         , 0x1008ff13), spawn "amixer set Master 2dB+")
+    , ((0         , 0x1008ff11), spawn "amixer set Master 2dB-")
+    , ((0         , 0x1008ff14), spawn "mpc toggle")
+    , ((0         , 0x1008ff16), spawn "mpc prev")
+    , ((0         , 0x1008ff17), spawn "mpc next")
     ]
 

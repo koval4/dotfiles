@@ -1,0 +1,44 @@
+
+#!/bin/sh
+
+#colors
+blue="#71a2df"
+gray="#121212"
+BG="#0b0b14"
+FG="#e6f7ff"
+FONT="M+1mn:size=10"
+
+# spacing
+space(){
+	echo "%{F#555} | %{F-}"
+}
+
+# shows current keyboard layout
+# left click to change layout to us -> ua -> ru -> us ...
+layout(){
+	LAYOUT=$(setxkbmap -query | awk 'END{print $2}')
+	#shows current keyboard layout
+	#changes layout whel clicked
+    echo -ne "%{A:$HOME/scripts/layout_switch.sh:}%{F${blue}}\uf044%{F-} $LAYOUT%{A}"
+}
+
+tasker(){
+    TASKER_PATH="$HOME/scripts/tasker"
+    TODO_PATH="$HOME/todo.txt"
+    TODO_ITEM=`$TASKER_PATH view $TODO_PATH`
+    REMOVE="$TASKER_PATH remove $TODO_PATH"
+    ADD="xterm -e $TASKER_PATH add $TODO_PATH"
+    VIEW="xterm -e nvim $TODO_PATH"
+    CONTROLS="%{F${blue}}[%{F-}%{A:$REMOVE:}✔%{A}|%{A:$ADD:}+%{A}%{F${blue}}]%{F-}"
+    echo "%{F${blue}}TODO:%{F-} %{A:$VIEW:}$TODO_ITEM%{A} $CONTROLS"
+}
+
+# shows current date and time
+dateTime(){
+    clock="%{F${blue}}\uf017%{F-}"
+	TIME=`date +"%H:%M"`
+	echo -e "%{A:$HOME/scripts/calendar.sh:}$TIME%{A}"
+}
+
+echo -e "%{l}%{c}%{r}$(tasker)$(space)$(layout)$(space)$(dateTime)$(space)"
+sleep 1
