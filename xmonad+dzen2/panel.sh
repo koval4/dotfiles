@@ -40,5 +40,22 @@ dateTime(){
 	echo -e "%{A:$HOME/scripts/calendar.sh:}$TIME%{A}"
 }
 
-echo -e "%{l}%{c}%{r}$(tasker)$(space)$(layout)$(space)$(dateTime)$(space)"
+# shows volume bar
+# scroll up to increase volume
+# scroll downto decrease volume
+vol(){
+	#BAR_OPS="-fg #d9d9d9 -bg #555555 -h 7 -w 25 -s o -ss 1 -sw 2"
+	BAR_OPS="-fg #d9d9d9 -bg $blue -h 7 -w 40 -s o -nonl"
+
+    cur=$(amixer get Master|grep %|awk '{ print $4 }'|sed 's/%//g'|sed 's/\[//g'|sed 's/\]//g')
+    tot=100
+
+    for w in `seq 0 10 $((cur - 1))`; do line="${line}━"; done
+    for w in `seq $((cur + 1)) 10 $tot`; do line="${line}─"; done
+
+    VBAR=`echo "$VBS" | gdbar $BAR_OPS |awk '{ print $1 }'`
+	echo -e "%{A4:amixer set Master 2dB+:}%{A5:amixer set Master 2dB-:}%{F${blue}}\uf028 %{F-}$line %{A}%{A}"
+}
+
+echo -e "%{l}%{c}%{r}$(tasker)$(space)$(layout)$(space)$(vol)$(space)$(dateTime)$(space)"
 sleep 1

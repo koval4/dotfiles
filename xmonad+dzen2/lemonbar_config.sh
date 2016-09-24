@@ -71,21 +71,21 @@ vol(){
 	#BAR_OPS="-fg #d9d9d9 -bg #555555 -h 7 -w 25 -s o -ss 1 -sw 2"
 	BAR_OPS="-fg #d9d9d9 -bg $blue -h 7 -w 40 -s o -nonl"
 
-	ismute=`amixer get Master|grep %|awk '{ print $6 }'|sed 's/\[//g'|sed 's/\]//g'`
-if [ "$ismute" == "off" ]; then
-		VBS="0"
-	else
-		VBS=`amixer get Master|grep %|awk '{ print $4 }'|sed 's/%//g'|sed 's/\[//g'|sed 's/\]//g'`
-	fi
+    cur=$(amixer get Master|grep %|awk '{ print $4 }'|sed 's/%//g'|sed 's/\[//g'|sed 's/\]//g')
+    tot=100
+
+    for w in `seq 0 10 $((cur - 1))`; do line="${line}━"; done
+    for w in `seq $((cur + 1)) 10 $tot`; do line="${line}─"; done
 
     VBAR=`echo "$VBS" | gdbar $BAR_OPS |awk '{ print $1 }'`
-	echo -e "%{A4:amixer set Master 2dB+:}%{A5:amixer set Master 2dB-:}%{F${blue}}\uf028 %{F-}$VBAR %{A}%{A}"
+	echo -e "%{A4:amixer set Master 2dB+:}%{A5:amixer set Master 2dB-:}%{F${blue}}\uf028 %{F-}$line %{A}%{A}"
 }
 
 # shows current date and time
 dateTime(){
-	TIME=`date +"%H:%M:%S"`
-	echo -e "%{F${blue}}\uf017 %{F-}$TIME"
+    clock="%{F${blue}}\uf017%{F-}"
+	TIME=`date +"%H:%M"`
+	echo -e "%{A:$HOME/scripts/calendar.sh:}$TIME%{A}"
 }
 
 tasker(){
@@ -101,6 +101,6 @@ tasker(){
 
 while true ; do
 	#    echo $(tasker)$(space)$(layout)$(space)$(sysinfo)$(space)$(vol)$(music)$(space)$(dateTime)$(space)
-	echo "%{l}%{c}%{r}$(tasker)$(space)$(layout)$(space)$(dateTime)$(space)"
+	echo "%{l}%{c}%{r}$(tasker)$(space)$(layout)$(space)$(vol)$(space)$(dateTime)$(space)"
     sleep 1
-done | lemonbar -p -d -g 1440x25+0+0  -F $FG -B $BG -f "$FONT" -f "FontAwesome:size=10" | zsh
+done | lemonbar -p -d -g 766x25+600+0  -F $FG -B $BG -f "$FONT" -f "FontAwesome:size=10" | zsh
