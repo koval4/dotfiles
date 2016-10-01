@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveDataTypeable #-}
 import XMonad
 -- Prompt
 import XMonad.Prompt
@@ -9,6 +10,7 @@ import XMonad.Operations
 
 import System.IO
 import System.Exit
+import Data.Monoid
 
 import XMonad.Util.Run
 import XMonad.Util.Loggers
@@ -40,7 +42,6 @@ import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Grid
 import XMonad.Layout.Minimize
 import XMonad.Layout.Maximize
-import XMonad.Util.Scratchpad (scratchpadSpawnAction, scratchpadManageHook, scratchpadFilterOutWorkspace)
 import XMonad.Layout.BoringWindows (boringWindows)
 import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
 import XMonad.Layout.WindowArranger (windowArrange, WindowArrangerMsg(..))
@@ -48,17 +49,19 @@ import XMonad.Layout.Reflect (reflectVert, reflectHoriz, REFLECTX(..), REFLECTY(
 import XMonad.Layout.MultiToggle (mkToggle, single, EOT(EOT), Toggle(..), (??))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, MIRROR, NOBORDERS))
 import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(Toggle))
+import XMonad.Util.Scratchpad (scratchpadSpawnAction, scratchpadManageHook, scratchpadFilterOutWorkspace)
+import qualified XMonad.Util.ExtensibleState as XS
+import XMonad.Util.Timer
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
-myStartup = do
-    spawnOnce "feh --bg-scale --randomize /home/koval4/Pictures/wallhaven-4145.png"
-    spawnOnce "mpd"
-    spawnOnce "mpc update"
-    spawnOnce "twmnd"
-    --spawnOnce "/home/koval4/scripts/tasker startReminder /home/koval4/todo.txt"
+data TIDState = TID TimerId deriving Typeable
 
+instance ExtensionClass TIDState where
+  initialValue = TID 0
+
+main :: IO ()
 main = do
         dzenBar <- spawnPipe myBar
         --infoPanel <- spawnPipe "/home/koval4/.xmonad/lemonbar_config.sh"
@@ -67,23 +70,45 @@ main = do
         , workspaces           = myWorkspaces
         , modMask              = mod4Mask
         , borderWidth          = 4
-        , normalBorderColor    = bg
+        , normalBorderColor    = "#0b0b14"
         , focusedBorderColor   = "#71a2df"
         , startupHook          = myStartup
         , manageHook           = manageDocks <+> myManageHook
-        , handleEventHook      = mconcat [ docksEventHook, handleEventHook def ]
+        , handleEventHook      = mconcat [ docksEventHook, clockEventHook, handleEventHook def ]
         , layoutHook           = myLayoutHook
         , logHook              = myLogHook dzenBar
         , keys = myKeys
         }
 
-myBitmapsDir = "/home/kova4/.xmonad/dzen_icons/"
-bg = "#0b0b14"
+myStartup :: X ()
+myStartup = do
+    spawnOnce "feh --bg-scale --randomize /home/koval4/Pictures/ene.png"
+    spawnOnce "mpd"
+    spawnOnce "mpc update"
+    spawnOnce "twmnd"
+    --spawnOnce "/home/koval4/scripts/tasker startReminder /home/koval4/todo.txt"
+    startTimer 1 >>= XS.put . TID
+
+clockEventHook :: Event -> X All
+clockEventHook e = do
+    (TID t) <- XS.get
+    handleTimer t e $ do
+      startTimer 1 >>= XS.put . TID
+      ask >>= logHook . config
+      return Nothing
+    return $ All True
 
 myWorkspaces :: [String]
-myWorkspaces =  ["web","dev","term","media","other"]
+myWorkspaces =  [web,dev,term,media,other]
 
-myBar = "lemonbar -p -d -g 1366x25+0+0 " ++ myBarStyle ++ " | zsh"
+-- Workspaces names
+web = "\xf269"
+dev = "\xf121"
+term = "\xf120"
+media = "\xf008"
+other = "\xf067"
+
+myBar = "lemonbar -p -d -g 1440x25+0+0 " ++ myBarStyle ++ " | zsh"
 myBarStyle = " -F \"#e6f7ff\" -B \"#0b0b14\" " ++ myBarFont
 myBarFont = " -f \"M+1mn:size=10\" -f \"FontAwesome:size=10\" "
 
@@ -96,8 +121,8 @@ myLayoutHook = avoidStruts
                -- $ minimize
                -- $ boringWindows
                $ smartBorders
-               $ onWorkspace "web" webTiled
-               $ onWorkspace "media" mediaTiled
+               $ onWorkspace web webTiled
+               $ onWorkspace media mediaTiled
                $ tiled ||| Full
                where tiled = Tall nmaster delta ratio
                      mediaTiled = noBorders $ tiled
@@ -111,12 +136,12 @@ myLayoutHook = avoidStruts
 myManageHook :: ManageHook
 myManageHook = (composeAll . concat $
     [ [resource     =? r            --> doIgnore         |   r   <- myIgnores] -- ignore desktop
-    , [className    =? c            --> doShift  "dev"   |   c   <- myDev    ] -- move dev to dev
-    , [className    =? c            --> doShift  "web"   |   c   <- myWebs   ] -- move webs to web
-    , [className    =? c            --> doShift  "media" |   c   <- myMedia  ] -- move media to media
+    , [className    =? c            --> doShift  dev     |   c   <- myDev    ] -- move dev to dev
+    , [className    =? c            --> doShift  web     |   c   <- myWebs   ] -- move webs to web
+    , [className    =? c            --> doShift  media   |   c   <- myMedia  ] -- move media to media
     , [className    =? c            --> doCenterFloat    |   c   <- myFloats ] -- float my floats
     , [className    =? c            --> doCenterFloat    |   c   <- myOffice ] -- office to floats
-    , [className    =? c            --> doShift "other"  |   c   <- myBack   ] -- background apps tp 9
+    , [className    =? c            --> doShift other    |   c   <- myBack   ] -- background apps tp 9
     , [name         =? n            --> doCenterFloat    |   n   <- myNames  ] -- float my names
     , [isFullscreen                 --> myDoFullFloat                        ]
     ]) where
