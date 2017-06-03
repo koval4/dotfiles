@@ -6,7 +6,7 @@ blue="#71a2df"
 gray="#121212"
 BG="#0b0b14"
 FG="#e6f7ff"
-FONT="M+1mn:size=10"
+FONT="M+1mn:size=9"
 
 # spacing
 space(){
