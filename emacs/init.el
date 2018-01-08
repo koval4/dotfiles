@@ -10,6 +10,8 @@
 
 (require 'helm-config)
 (global-set-key (kbd "M-x") #'helm-M-x)
+(global-set-key (kbd "M-y") #'helm-show-kill-ring)
+(global-set-key (kbd "C-x C-b") #'helm-mini)
 (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
 (global-set-key (kbd "C-x C-f") #'helm-find-files)
 (helm-mode 1)
@@ -17,16 +19,41 @@
 (setq-default helm-autoresize-max-height 20
               helm-autoresize-min-height 20)
 
+(require 'all-the-icons)
 (require 'neotree)
 (global-set-key [f4] 'neotree-toggle)
+(setq neo-theme 'icons)
+
+(require 'highlight-symbol)
+(highlight-symbol-nav-mode)
+(add-hook 'prog-mode-hook 'highlight-symbol-mode)
+(setq highlight-symbol-on-navigation-p t)
+(global-set-key [(control f3)] 'highlight-symbol)
+(global-set-key [f3] 'highlight-symbol-next)
+(global-set-key [(shift f3)] 'highlight-symbol-prev)
+(global-set-key [(meta f3)] 'highlight-symbol-query-replace)
+
+(require 'highlight-unique-symbol)
+(highlight-unique-symbol t)
+
+(require 'highlight-indent-guides)
+(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+(setq highlight-indent-guides-method 'column)
+
+(require 'dashboard)
+(dashboard-setup-startup-hook)
+(setq dashboard-items '((recents . 15)))
+
+(require 'ace-popup-menu)
+(ace-popup-menu-mode 1)
 
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-backends (delete 'company-semantic company-backends))
 (add-to-list 'company-backends 'company-c-headers)
 
-(add-to-list 'default-frame-alist '(font . "M+ 1mn-10" ))
-(set-face-attribute 'default t :font "M+ 1mn-10" )
+(add-to-list 'default-frame-alist '(font . "M+ 1mn-9" ))
+(set-face-attribute 'default t :font "M+ 1mn-9" )
 
 ;; Looks configurations
 (tool-bar-mode 0)
@@ -37,6 +64,7 @@
 (setq auto-save-default nil)
 (setq inhibit-splash-screen t)
 (global-linum-mode t)
+(load-theme 'atom-one-dark t)
 
 (show-paren-mode t)
 
@@ -48,16 +76,24 @@
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 (setq-default c-basic-offset 4
-	      tab-width 4
-	      indent-tabs-mode nil)
+              tab-width 4
+              indent-tabs-mode nil)
 
 ;; activate whitespace-mode to view all whitespace characters
 (global-set-key (kbd "C-c w") 'whitespace-mode)
 
- ;; Package: smartparens
 (require 'smartparens-config)
 (show-smartparens-global-mode +1)
 (smartparens-global-mode 1)
+
+(require 'vimish-fold)
+(require 'evil-vimish-fold)
+(vimish-fold-mode 1)
+(evil-vimish-fold-mode 1)
+
+(require 'git-gutter-fringe+)
+(global-git-gutter+-mode)
+(git-gutter-fr+-minimal)
 
 ;; when you press RET, the curly braces automatically
 ;; add another newline
@@ -70,11 +106,15 @@
 (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+(require 'yasnippet)
+(yas-global-mode 1)
+
 ;; C++ config
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'c++-mode-hook 'modern-c++-font-lock-mode)
 (add-hook 'c++-mode-hook
-          (lambda () (setq-default flycheck-clang-language-standard "c++14")))
+          (lambda () (setq-default flycheck-clang-language-standard "c++17")))
 
 (defun my-irony-mode-hook ()
   (define-key irony-mode-map [remap completion-at-point]
@@ -84,6 +124,7 @@
 (add-hook 'irony-mode-hook 'my-irony-mode-hook)
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+(setq irony-additional-clang-options '("-std=c++17"))
 ;(define-key c++-mode-map [(tab)] 'company-complete)
 (require 'company-irony-c-headers)
 (eval-after-load 'company
@@ -91,8 +132,7 @@
     'company-backends '(company-irony-c-headers company-irony)))
 
 (require 'rtags)
-(cmake-ide-setup)
-(define-key c-mode-base-map (kbd "<f2>")
+(define-key c-mode-base-map [f2]
   (function rtags-find-symbol-at-point))
 (define-key c-mode-base-map (kbd "M-,")
   (function rtags-find-references-at-point))
@@ -101,14 +141,61 @@
   '(add-to-list
     'company-backends 'company-rtags))
 (setq-default rtags-use-helm t)
+(cmake-ide-setup)
+(setq cmake-ide-flags-c++ (append '("-std=c++17")))
+
+;(add-hook 'c++-mode-hook 'flycheck-mode-hook)
+;(add-hook 'c-mode-hook 'flycheck-mode-hook)
+(eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 (require 'srefactor)
 (semantic-mode 1)
 (define-key c-mode-map (kbd "M-RET") 'srefactor-refactor-at-point)
 (define-key c++-mode-map (kbd "M-RET") 'srefactor-refactor-at-point)
 
+(define-key c++-mode-map [f9] 'gud-break)
+(define-key c++-mode-map [f10] 'gud-next)
+(define-key c++-mode-map [f11] 'gud-step)
+
+(setq company-idle-delay 0)
+(define-key c-mode-map (kbd "C-SPC") 'company-complete)
+(define-key c++-mode-map (kbd "C-SPC") 'company-complete)
+(setq company-idle-delay 0.2)
+
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (setq-default c-default-style "stroustrup")
+
+(defadvice c-lineup-arglist (around my activate)
+  "Improve indentation of continued C++11 lambda function opened as argument."
+  (setq ad-return-value
+        (if (and (equal major-mode 'c++-mode)
+                 (ignore-errors
+                   (save-excursion
+                     (goto-char (c-langelem-pos langelem))
+                     ;; Detect "[...](" or "[...]{". preceded by "," or "(",
+                     ;;   and with unclosed brace.
+                     (looking-at ".*[(,][ \t]*\\[[^]]*\\][ \t]*[({][^}]*$"))))
+            0                           ; no additional indent
+          ad-do-it)))                   ; default behavior
+
+(defun insert-include-guards ()
+  "Insert C include guards."
+  (let* ((filename (file-name-nondirectory (file-name-sans-extension buffer-file-name)))
+         (define (concat (upcase filename) "_H_INCLUDED")))
+    (progn
+      (insert (concat "#ifndef " define "\n"))
+      (insert (concat "#define" define "\n"))
+      (insert "\n\n\n")
+      (insert (concat "#endif // " define)))))
+
+(defun insert-class-definition ()
+  "Insert C++ class definition."
+  (let ((class-name (read-from-minibuffer "Class name: ")))
+    (progn
+      (insert (concat "class " class-name " {\n"))
+      (insert "public:\n")
+      (insert "private:\n")
+      (insert "};\n"))))
 
 (setq
  ;; use gdb-many-windows by default
@@ -126,12 +213,21 @@
 (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
   (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
   (add-to-list 'exec-path my-cabal-path))
-(custom-set-variables '(haskell-tags-on-save t))
-
 (custom-set-variables
-  '(haskell-process-suggest-remove-import-lines t)
-  '(haskell-process-auto-import-loaded-modules t)
-  '(haskell-process-log t))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-ghc-show-info t)
+ '(haskell-process-auto-import-loaded-modules t)
+ '(haskell-process-log t)
+ '(haskell-process-suggest-remove-import-lines t)
+ '(haskell-process-type (quote stack-ghci))
+ '(haskell-tags-on-save t)
+ '(package-selected-packages
+   (quote
+    (git-gutter-fringe+ evil-vimish-fold vimish-fold yatemplate yasnippet-snippets yasnippet ace-popup-menu dashboard markdown-mode all-the-icons d-mode evil-quickscope highlight highlight-blocks highlight-symbol rtags cmake-font-lock cmake-mode diff-hl highlight-unique-symbol modern-cpp-font-lock highlight-indent-guides srefactor neotree magit helm flycheck-irony flycheck-hdevtools flycheck-haskell flycheck-ghcmod flycheck-clangcheck evil-smartparens company-irony-c-headers company-irony company-ghci company-ghc company-c-headers cmake-ide auto-complete atom-one-dark-theme))))
+
 (eval-after-load 'haskell-mode '(progn
   (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
   (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
@@ -149,13 +245,17 @@
 (eval-after-load 'haskell-cabal
   '(define-key haskell-cabal-mode-map (kbd "C-c C-o") 'haskell-compile))
 
-(custom-set-variables '(haskell-process-type 'stack-ghci))
-
 (autoload 'ghc-init "ghc" nil t)
 (autoload 'ghc-debug "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
-(add-hook 'haskell-mode-hook 'structured-haskell-mode)
+;(add-hook 'haskell-mode-hook 'structured-haskell-mode)
 
 (add-to-list 'company-backends 'company-ghc)
-(custom-set-variables '(company-ghc-show-info t))
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
