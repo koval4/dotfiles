@@ -13,12 +13,15 @@ import qualified XMonad.Util.ExtensibleState as XS
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 
-import XMonad.Layout.Fullscreen
+--import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
 import XMonad.Layout.BinarySpacePartition
 import XMonad.Layout.StackTile
 import XMonad.Layout.PerWorkspace (onWorkspace)
+
+import XMonad.Hooks.SetWMName
 
 import XMonad.Actions.WindowGo
 
@@ -32,7 +35,8 @@ instance ExtensionClass TIDState where
 main :: IO ()
 main = do
         dzenBar <- spawnPipe myBar
-        xmonad $ fullscreenSupport $ def {
+        --xmonad $ fullscreenSupport $ def {
+        xmonad $ ewmh $ def {
           terminal             = "termite"
         , workspaces           = myWorkspaces
         , modMask              = mod4Mask
@@ -41,7 +45,7 @@ main = do
         , focusedBorderColor   = "#71a2df"
         , startupHook          = myStartup
         , manageHook           = manageDocks <+> myManageHook
-        , handleEventHook      = mconcat [ docksEventHook, clockEventHook, handleEventHook def ]
+          , handleEventHook      = mconcat [ docksEventHook, clockEventHook, handleEventHook def, fullscreenEventHook ]
         , layoutHook           = myLayoutHook
         , logHook              = myLogHook dzenBar
         , keys = myKeys
@@ -53,6 +57,7 @@ myStartup = do
     spawn "mpd &"
     spawn "mpc update &"
     spawn "twmnd &"
+    --setWMName "LG3D"
     startTimer 1 >>= XS.put . TID
 
 clockEventHook :: Event -> X All
@@ -146,11 +151,11 @@ myKeys x  = M.union (M.fromList (newKeys x)) (keys def x)
 
 -- Add new and/or redefine key bindings
 newKeys conf@XConfig {XMonad.modMask = modm} =
-    [ ((0         , xK_Print  ), spawn "spectacle")
+    [ ((0         , xK_Print  ), spawn "deepin-screenshot")
     , ((mod4Mask  , xK_F2     ), spawn "rofi -show run")
-    , ((mod1Mask  , xK_Shift_L), spawn "/home/koval4/scripts/layout_switch.sh")
-    , ((shiftMask , xK_Alt_L  ), spawn "/home/koval4/scripts/layout_switch.sh")
-    , ((mod4Mask  , xK_f      ), spawn "firefox")
+    --, ((mod1Mask  , xK_Shift_L), spawn "/home/koval4/scripts/layout_switch.sh")
+    --, ((shiftMask , xK_Alt_L  ), spawn "/home/koval4/scripts/layout_switch.sh")
+    , ((mod4Mask  , xK_f      ), spawn "apulse firefox")
     , ((mod4Mask  , xK_e      ), spawn "emacs")
     , ((mod4Mask  , xK_b      ), spawn "baka-mplayer")
     , ((mod4Mask  , xK_g      ), spawn "telegram-desktop")

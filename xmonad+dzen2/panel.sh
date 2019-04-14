@@ -16,7 +16,17 @@ space(){
 # shows current keyboard layout
 # left click to change layout to us -> ua -> ru -> us ...
 layout(){
-	LAYOUT=$(setxkbmap -query | awk 'END{print $2}')
+    case "$(xset -q|grep LED| awk '{ print $10 }')" in
+        "00000000") LAYOUT="en" ;;
+        "00000001") LAYOUT="en" ;;
+        "00000002") LAYOUT="en" ;;
+        "00000003") LAYOUT="en" ;;
+        "00001000") LAYOUT="ua" ;;
+        "00001001") LAYOUT="ua" ;;
+        "00001002") LAYOUT="ua" ;;
+        "00001003") LAYOUT="ua" ;;
+        *) LAYOUT="??" ;;
+    esac
 	#shows current keyboard layout
 	#changes layout whel clicked
     echo -ne "%{A:$HOME/scripts/layout_switch.sh:}%{F${blue}}\uf044%{F-} $LAYOUT%{A}"
